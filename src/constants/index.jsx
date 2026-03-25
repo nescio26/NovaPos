@@ -90,11 +90,14 @@ export const menus = [
 
 /* ---------------- TABLES ---------------- */
 export const tables = [
-  { id: 1, name: "Table 1", status: "Booked", initial: "AM", seats: 4 },
-  { id: 2, name: "Table 2", status: "Available", initial: "MB", seats: 6 },
-  { id: 3, name: "Table 3", status: "Booked", initial: "JS", seats: 2 },
-  { id: 4, name: "Table 4", status: "Available", initial: "HR", seats: 4 },
-  { id: 5, name: "Table 5", status: "Booked", initial: "PL", seats: 3 },
+  { id: 1, name: "Table 1", status: "Booked", initials: "AM", seats: 4 },
+  { id: 2, name: "Table 2", status: "Available", initials: "MB", seats: 6 },
+  { id: 3, name: "Table 3", status: "Booked", initials: "JS", seats: 2 },
+  { id: 4, name: "Table 4", status: "Available", initials: "HR", seats: 4 },
+  { id: 5, name: "Table 5", status: "Booked", initials: "PL", seats: 3 },
+  { id: 6, name: "Table 6", status: "Booked", initials: "JS", seats: 2 },
+  { id: 7, name: "Table 7", status: "Available", initials: "HR", seats: 4 },
+  { id: 8, name: "Table 8", status: "Booked", initials: "PL", seats: 3 },
 ];
 
 /* ---------------- METRICS ---------------- */

@@ -13,7 +13,7 @@ const OrdersCard = () => {
   const isReady = status === "Ready";
 
   return (
-    <div className="group flex flex-col gap-4 bg-slate-800/20 hover:bg-slate-800/40 border border-white/5 p-6 rounded-[2.5rem] transition-all duration-500 hover:-translate-y-1 w-full md:w-[350px] shadow-xl">
+    <div className="group flex flex-col gap-4 bg-slate-300/20 hover:bg-slate-300/40 border border-white/5 p-6 rounded-[2.5rem] transition-all duration-500 hover:-translate-y-1 w-full md:w-[350px] shadow-xl">
       {/* TOP SECTION: AVATAR & STATUS */}
       <div className="flex items-center justify-between">
         <div

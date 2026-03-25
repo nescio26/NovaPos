@@ -28,7 +28,7 @@ const Orders = () => {
             </h1>
           </div>
 
-          <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em] pl-16">
+          <p className="text-slate-500 text-[15px] font-black uppercase tracking-[0.3em] pl-16">
             Real-time kitchen status
           </p>
         </div>
@@ -52,7 +52,7 @@ const Orders = () => {
       </div>
 
       {/* ORDERS GRID - Scrollable with no-scrollbar */}
-      <div className="flex-1 px-10 py-4 flex flex-wrap content-start gap-8 overflow-y-auto no-scrollbar pb-32">
+      <div className="flex-1 px-10 py-4 flex flex-wrap content-start gap-10 overflow-y-auto no-scrollbar">
         {/* Later you will map your real data here filtered by 'status' */}
         <OrdersCard />
         <OrdersCard />
