@@ -11,9 +11,6 @@ import { GrInProgress } from "react-icons/gr";
 const Home = () => {
   return (
     <div className="h-screen bg-[#0F172A] flex flex-col text-slate-100 font-sans selection:bg-indigo-500/30 overflow-hidden">
-      {/* 1. TOP HEADER */}
-      <Header />
-
       {/* MAIN CONTENT */}
       <div className="flex flex-1 flex-col md:flex-row overflow-hidden pb-20 md:pb-0">
         {/* LEFT - DASHBOARD SCROLLABLE AREA */}

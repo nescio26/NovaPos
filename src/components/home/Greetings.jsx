@@ -57,14 +57,14 @@ const Greetings = () => {
       {/* RIGHT - DYNAMIC CLOCK */}
       <div className="mt-4 md:mt-0 md:text-right bg-white/5 border border-white/5 px-5 py-3 rounded-2xl backdrop-blur-sm">
         <div className="flex items-baseline md:justify-end gap-2">
-          <h2 className="text-2xl font-mono font-bold text-white tabular-nums tracking-tight">
+          <h2 className="text-3xl font-mono font-bold text-white tabular-nums tracking-tight">
             {formatTime(dateTime).split(" ")[0]}
           </h2>
-          <span className="text-xs font-black text-indigo-400 uppercase">
+          <span className="text-s font-black text-indigo-400 uppercase">
             {formatTime(dateTime).split(" ")[1]}
           </span>
         </div>
-        <p className="text-slate-500 text-[10px] font-black uppercase tracking-[0.2em] mt-1">
+        <p className="text-slate-500 text-[20px] font-black uppercase tracking-[0.2em] mt-1">
           {formatDate(dateTime)}
         </p>
       </div>

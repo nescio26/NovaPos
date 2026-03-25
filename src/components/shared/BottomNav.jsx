@@ -3,13 +3,19 @@ import { BiSolidDish } from "react-icons/bi";
 import { CiCircleMore } from "react-icons/ci";
 import { FaHome } from "react-icons/fa";
 import { MdOutlineReorder, MdTableBar } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 const BottomNav = () => {
+  const navigate = useNavigate();
+
   return (
     // Added backdrop-blur and a softer border color
-    <div className="fixed bottom-0 left-0 right-0 h-20 bg-slate-900/80 backdrop-blur-xl border-t border-white/10 flex justify-around items-center z-50">
+    <div className="fixed bottom-0 left-0 right-0 h-15 bg-slate-900/80 backdrop-blur-xl border-t border-white/10 flex justify-around items-center z-50">
       {/* HOME */}
-      <button className="flex flex-col items-center gap-1 transition-all duration-300 text-indigo-400 group">
+      <button
+        onClick={() => navigate("/")}
+        className="flex flex-col items-center gap-1 transition-all duration-300 text-indigo-400 group"
+      >
         <FaHome
           size={22}
           className="group-active:scale-90 transition-transform"
@@ -22,7 +28,10 @@ const BottomNav = () => {
       </button>
 
       {/* ORDERS */}
-      <button className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition-colors group">
+      <button
+        onClick={() => navigate("/orders")}
+        className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition-colors group"
+      >
         <MdOutlineReorder
           size={22}
           className="group-active:scale-90 transition-transform"
@@ -37,7 +46,10 @@ const BottomNav = () => {
       <div className="w-20"></div>
 
       {/* TABLES */}
-      <button className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition-colors group">
+      <button
+        onClick={() => navigate("/tables")}
+        className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition-colors group"
+      >
         <MdTableBar
           size={22}
           className="group-active:scale-90 transition-transform"
@@ -49,7 +61,10 @@ const BottomNav = () => {
       </button>
 
       {/* MORE */}
-      <button className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition-colors group">
+      <button
+        onClick={() => navigate("/more")}
+        className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition-colors group"
+      >
         <CiCircleMore
           size={22}
           className="group-active:scale-90 transition-transform"

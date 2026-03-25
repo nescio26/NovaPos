@@ -5,7 +5,6 @@ const MiniCard = ({ title, icon, number, footerNum, trend }) => {
 
   return (
     <div className="group relative overflow-hidden bg-slate-800/40 backdrop-blur-sm p-6 rounded-[2rem] border border-white/5 shadow-lg hover:border-white/20 hover:bg-slate-800/60 transition-all duration-300 flex flex-col justify-between min-h-[160px]">
-      {/* GLOW EFFECT (Subtle background pulse on hover) */}
       <div
         className={`absolute -top-10 -right-10 w-24 h-24 blur-[50px] transition-opacity duration-500 group-hover:opacity-100 opacity-50 ${
           isEarnings ? "bg-indigo-500/20" : "bg-emerald-500/20"
@@ -33,7 +32,7 @@ const MiniCard = ({ title, icon, number, footerNum, trend }) => {
       {/* MIDDLE SECTION: NUMBER */}
       <div className="mt-4 z-10">
         <h1 className="text-white text-3xl font-extrabold tracking-tight leading-none">
-          {number}
+          {title === "Total Earnings" ? `RM${number}` : number}{" "}
         </h1>
       </div>
 
