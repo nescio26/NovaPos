@@ -77,14 +77,76 @@ export const popularDishes = [
   },
 ];
 
+/* ---------------- CATEGORY ITEMS ---------------- */
+export const riceItems = popularDishes.filter(
+  (item) => item.category === "Rice",
+);
+
+export const noodleItems = popularDishes.filter(
+  (item) => item.category === "Noodles",
+);
+
+export const mainItems = popularDishes.filter(
+  (item) => item.category === "Main",
+);
+
+export const snackItems = popularDishes.filter(
+  (item) => item.category === "Snack",
+);
+
+export const dessertItems = popularDishes.filter(
+  (item) => item.category === "Dessert",
+);
+
 /* ---------------- MENUS ---------------- */
 export const menus = [
   {
     id: 1,
-    name: "Masakan Melayu",
-    bgColor: "#b73e3e",
-    icon: "🇲🇾",
+    name: "All",
+    bgColor: "#1f2937",
+
+    icon: "🍽️",
     items: popularDishes,
+  },
+  {
+    id: 2,
+    name: "Rice",
+    bgColor: "#b73e3e",
+
+    icon: "🍚",
+    items: riceItems,
+  },
+  {
+    id: 3,
+    name: "Noodles",
+    bgColor: "#5b45b0",
+
+    icon: "🍜",
+    items: noodleItems,
+  },
+  {
+    id: 4,
+    name: "Main Course",
+    bgColor: "#285430",
+
+    icon: "🍗",
+    items: mainItems,
+  },
+  {
+    id: 5,
+    name: "Snacks",
+    bgColor: "#735f32",
+
+    icon: "🥟",
+    items: snackItems,
+  },
+  {
+    id: 6,
+    name: "Desserts",
+    bgColor: "#7f167f",
+
+    icon: "🍧",
+    items: dessertItems,
   },
 ];
 
@@ -136,7 +198,7 @@ export const metricsData = [
 export const itemsData = [
   {
     title: "Total Categories",
-    value: "1",
+    value: "6",
     percentage: "12%",
     color: "#5b45b0",
     isIncrease: false,
@@ -157,7 +219,7 @@ export const itemsData = [
   },
   {
     title: "Total Tables",
-    value: "5",
+    value: "8",
     color: "#7f167f",
   },
 ];

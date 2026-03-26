@@ -38,7 +38,7 @@ const Greetings = () => {
     <div className="flex flex-col md:flex-row justify-between items-start md:items-center py-2">
       {/* LEFT - PERSONALIZED MESSAGE */}
       <div className="space-y-1">
-        <h1 className="text-3xl md:text-4xl font-black text-white tracking-tighter transition-all">
+        <h1 className=" text-3xl md:text-4xl font-black text-white tracking-wider transition-all">
           {getGreeting()}
           <span className="text-indigo-500">.</span>
         </h1>
@@ -57,7 +57,7 @@ const Greetings = () => {
       {/* RIGHT - DYNAMIC CLOCK */}
       <div className="mt-4 md:mt-0 md:text-right bg-white/5 border border-white/5 px-5 py-3 rounded-2xl backdrop-blur-sm">
         <div className="flex items-baseline md:justify-end gap-2">
-          <h2 className="text-3xl font-mono font-bold text-white tabular-nums tracking-tight">
+          <h2 className="text-3xl font-mono font-bold text-white tabular-nums tracking-wide">
             {formatTime(dateTime).split(" ")[0]}
           </h2>
           <span className="text-s font-black text-indigo-400 uppercase">

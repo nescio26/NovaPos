@@ -1,99 +1,142 @@
-import React from "react";
+import React, { useState } from "react";
 import { BiSolidDish } from "react-icons/bi";
 import { CiCircleMore } from "react-icons/ci";
 import { FaHome } from "react-icons/fa";
 import { MdOutlineReorder, MdTableBar } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import Modal from "./Modal";
 
 const BottomNav = () => {
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [guestCount, setGuestCount] = useState(1);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+
+  const increment = () => guestCount < 12 && setGuestCount((prev) => prev + 1);
+  const decrement = () => guestCount > 1 && setGuestCount((prev) => prev - 1);
 
   return (
-    // Added backdrop-blur and a softer border color
-    <div className="fixed bottom-0 left-0 right-0 h-15 bg-slate-900/80 backdrop-blur-xl border-t border-white/10 flex justify-around items-center z-50">
-      {/* HOME */}
-      <button
-        onClick={() => navigate("/")}
-        className="flex flex-col items-center gap-1 transition-all duration-300 text-indigo-400 group"
+    <>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={closeModal}
+        title="New Order Registration"
       >
-        <FaHome
-          size={22}
-          className="group-active:scale-90 transition-transform"
+        <div className="flex flex-col gap-5">
+          {/* INPUT FIELDS */}
+          <div className="grid grid-cols-1 gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-slate-400 text-[11px] font-bold uppercase tracking-wider">
+                Customer Name
+              </label>
+              <input
+                type="text"
+                placeholder="Full Name"
+                className="bg-slate-800/50 border border-slate-700 rounded-lg p-3 text-sm text-white focus:border-indigo-500 focus:outline-none transition-colors"
+              />
+            </div>
+
+            <div className="flex flex-col gap-1.5">
+              <label className="text-slate-400 text-[11px] font-bold uppercase tracking-wider">
+                Contact Number
+              </label>
+              <input
+                type="tel"
+                placeholder="Phone"
+                className="bg-slate-800/50 border border-slate-700 rounded-lg p-3 text-sm text-white focus:border-indigo-500 focus:outline-none transition-colors"
+              />
+            </div>
+          </div>
+
+          {/* GUEST SELECTOR - CLEANER VERSION */}
+          <div className="flex flex-col gap-1.5">
+            <label className="text-slate-400 text-[11px] font-bold uppercase tracking-wider">
+              Total Guests
+            </label>
+            <div className="flex items-center justify-between bg-slate-800/80 border border-slate-700 rounded-lg p-2">
+              <button
+                onClick={decrement}
+                className="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 rounded-md transition-all text-xl"
+              >
+                &minus;
+              </button>
+              <span className="text-white font-semibold text-sm">
+                {guestCount} {guestCount === 1 ? "Guest" : "Guests"}
+              </span>
+              <button
+                onClick={increment}
+                className="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 rounded-md transition-all text-xl"
+              >
+                &#43;
+              </button>
+            </div>
+          </div>
+
+          {/* PRIMARY ACTION */}
+          <button
+            onClick={() => {
+              navigate("/tables");
+              closeModal();
+            }}
+            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm py-3.5 rounded-lg transition-colors mt-2"
+          >
+            Confirm & Select Table
+          </button>
+        </div>
+      </Modal>
+
+      {/* NAVIGATION BAR - REDUCED OPACITY & NO GLOW */}
+      <div className="fixed bottom-0 left-0 right-0 h-16 bg-slate-900 border-t border-slate-800 flex justify-around items-center z-50">
+        <NavButton
+          icon={<FaHome size={20} />}
+          label="Home"
+          onClick={() => navigate("/")}
+          active
         />
-        <span className="text-[10px] font-bold uppercase tracking-widest">
-          Home
-        </span>
-        {/* Active Indicator Dot */}
-        <div className="w-1 h-1 bg-indigo-400 rounded-full mt-0.5"></div>
-      </button>
-
-      {/* ORDERS */}
-      <button
-        onClick={() => navigate("/orders")}
-        className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition-colors group"
-      >
-        <MdOutlineReorder
-          size={22}
-          className="group-active:scale-90 transition-transform"
+        <NavButton
+          icon={<MdOutlineReorder size={20} />}
+          label="Orders"
+          onClick={() => navigate("/orders")}
         />
-        <span className="text-[10px] font-bold uppercase tracking-widest">
-          Orders
-        </span>
-        <div className="w-1 h-1 bg-transparent mt-0.5"></div>
-      </button>
 
-      {/* CENTER GAP for FAB */}
-      <div className="w-20"></div>
+        {/* CENTER ACTION - NO GLOW/PULSE */}
+        <div className="relative -top-5">
+          <button
+            onClick={openModal}
+            className="bg-indigo-600 text-white p-4 rounded-xl shadow-xl hover:bg-indigo-500 active:scale-95 transition-all"
+          >
+            <BiSolidDish size={24} />
+          </button>
+        </div>
 
-      {/* TABLES */}
-      <button
-        onClick={() => navigate("/tables")}
-        className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition-colors group"
-      >
-        <MdTableBar
-          size={22}
-          className="group-active:scale-90 transition-transform"
+        <NavButton
+          icon={<MdTableBar size={20} />}
+          label="Tables"
+          onClick={() => navigate("/tables")}
         />
-        <span className="text-[10px] font-bold uppercase tracking-widest">
-          Tables
-        </span>
-        <div className="w-1 h-1 bg-transparent mt-0.5"></div>
-      </button>
-
-      {/* MORE */}
-      <button
-        onClick={() => navigate("/more")}
-        className="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-200 transition-colors group"
-      >
-        <CiCircleMore
-          size={22}
-          className="group-active:scale-90 transition-transform"
+        <NavButton
+          icon={<CiCircleMore size={20} />}
+          label="More"
+          onClick={() => navigate("/more")}
         />
-        <span className="text-[10px] font-bold uppercase tracking-widest">
-          More
-        </span>
-        <div className="w-1 h-1 bg-transparent mt-0.5"></div>
-      </button>
-
-      {/* FLOATING ACTION BUTTON (FAB) */}
-      <div className="absolute left-1/2 -translate-x-1/2 -top-10 flex flex-col items-center">
-        {/* Decorative Ring for depth */}
-        <div className="absolute inset-0 bg-indigo-500/20 blur-2xl rounded-full -z-10 animate-pulse"></div>
-
-        <button className="bg-gradient-to-br from-indigo-500 to-blue-600 text-white rounded-[1.75rem] p-5 shadow-[0_10px_25px_rgba(79,70,229,0.4)] border-4 border-[#0F172A] active:scale-90 hover:scale-105 transition-all duration-200 group">
-          <BiSolidDish
-            size={28}
-            className="drop-shadow-md group-hover:rotate-12 transition-transform"
-          />
-        </button>
-
-        {/* Subtle Label for the FAB */}
-        <span className="mt-2 text-[10px] font-black text-indigo-400 uppercase tracking-tighter">
-          New Order
-        </span>
       </div>
-    </div>
+    </>
   );
 };
+
+// Internal helper for cleaner code
+const NavButton = ({ icon, label, onClick, active }) => (
+  <button
+    onClick={onClick}
+    className={`flex flex-col items-center gap-0.5 w-16 transition-colors ${active ? "text-indigo-500" : "text-slate-500 hover:text-slate-300"}`}
+  >
+    {icon}
+    <span className="text-[9px] font-bold uppercase tracking-tight">
+      {label}
+    </span>
+  </button>
+);
 
 export default BottomNav;

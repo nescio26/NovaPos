@@ -32,7 +32,7 @@ const MiniCard = ({ title, icon, number, footerNum, trend }) => {
       {/* MIDDLE SECTION: NUMBER */}
       <div className="mt-4 z-10">
         <h1 className="text-white text-3xl font-extrabold tracking-tight leading-none">
-          {title === "Total Earnings" ? `RM${number}` : number}{" "}
+          {title === "Total Earnings" ? `${number}` : number}{" "}
         </h1>
       </div>
 
@@ -40,16 +40,10 @@ const MiniCard = ({ title, icon, number, footerNum, trend }) => {
       <div className="flex items-center gap-2 mt-4 z-10">
         {trend && (
           <div
-            className={`flex items-center justify-center px-2 py-1 rounded-full text-[10px] font-bold ${
-              trend === "up"
-                ? "bg-emerald-500/10 text-emerald-400"
-                : "bg-red-500/10 text-red-400"
-            }`}
-          >
-            {trend === "up" ? "↗" : "↘"}
-          </div>
+            className={`flex items-center justify-center px-2 py-1 rounded-full text-[10px] font-bold `}
+          ></div>
         )}
-        <p className="text-slate-500 text-xs font-medium tracking-tight">
+        <p className="text-slate-300 text-xs font-medium tracking-tight">
           {footerNum}
         </p>
       </div>

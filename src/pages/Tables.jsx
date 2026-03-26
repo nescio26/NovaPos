@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import BackButton from "../components/shared/BackButton";
-import TableCard from "../components/tables/TableCard";
 import BottomNav from "../components/shared/BottomNav";
+import TableCard from "../components/tables/TableCard";
+import BackButton from "../components/shared/BackButton";
 import { tables } from "../constants";
 
 function Tables() {
   const [status, setStatus] = useState("all");
 
-  // Filter logic: Only show tables that match the status, or all if status is "all"
   const filteredTables = tables.filter((table) => {
     if (status === "all") return true;
     return table.status.toLowerCase() === status;
@@ -15,29 +14,33 @@ function Tables() {
 
   return (
     <section className="h-screen bg-[#0F172A] flex flex-col text-slate-100 font-sans selection:bg-indigo-500/30 overflow-hidden">
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between px-10 pt-10 pb-6 gap-6">
-        <div className="flex flex-col gap-2">
-          <div className="flex items-center gap-4">
+      {/* TIGHTENED HEADER AREA */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between px-6 pt-6 pb-3 gap-4 border-b border-white/5 bg-slate-900/40 backdrop-blur-sm">
+        <div className="flex flex-col">
+          <div className="flex items-center gap-3">
             <BackButton />
-            <h1 className="text-white text-3xl font-black tracking-tighter uppercase italic flex items-center">
-              Tables <span className="text-indigo-500 gap-3">.</span>
+            <h1 className="text-slate-100 text-xl font-black tracking-tighter uppercase flex items-center">
+              Floor Management<span className="text-indigo-500 ml-1">.</span>
             </h1>
           </div>
-          <p className="text-slate-500 text-[15px] font-black uppercase tracking-[0.3rem] pl-16">
-            Floor Map Management
-          </p>
+          <div className="flex items-center gap-2 mt-1 pl-10">
+            <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></div>
+            <p className="text-slate-500 text-[9px] font-black uppercase tracking-[0.2em]">
+              Live Status
+            </p>
+          </div>
         </div>
 
-        {/* REFINED FILTER TABS BUTTON*/}
-        <div className="flex items-center bg-slate-800/40 p-1.5 rounded-2xl border border-white/5 overflow-x-auto no-scrollbar">
+        {/* COMPACT TABS */}
+        <div className="flex items-center bg-slate-900 border border-white/10 p-1 rounded-xl shadow-inner">
           {["all", "booked", "available"].map((cat) => (
             <button
               key={cat}
               onClick={() => setStatus(cat)}
-              className={`px-8 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all duration-300 whitespace-nowrap ${
+              className={`px-6 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest transition-all duration-300 whitespace-nowrap ${
                 status === cat
-                  ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20" // Active State
-                  : "text-slate-500 hover:text-slate-200 hover:bg-white/5" // Hover State
+                  ? "bg-indigo-600 text-white shadow-md"
+                  : "text-slate-400 hover:text-slate-300 hover:bg-white/5"
               }`}
             >
               {cat}
@@ -46,16 +49,25 @@ function Tables() {
         </div>
       </div>
 
-      <div className="flex-1 px-10 py-4 flex flex-wrap content-start justify-center lg:justify-start gap-8 overflow-y-auto no-scrollbar pb-32">
-        {filteredTables.map((table) => (
-          <TableCard
-            key={table.id}
-            name={table.name}
-            status={table.status}
-            initials={table.initials}
-          />
-        ))}
+      {/* TIGHTENED GRID AREA */}
+      <div className="flex-1 px-3 py-3 overflow-y-auto custom-scrollbar bg-[#0B1222]">
+        {/* Gap reduced from 10 to 4 for better density */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 content-start">
+          {filteredTables.map((table) => (
+            <TableCard
+              key={table.id}
+              name={table.name}
+              status={table.status}
+              initials={table.initials}
+              seats={table.seats}
+            />
+          ))}
+        </div>
+
+        {/* SPACER */}
+        <div className="h-28"></div>
       </div>
+
       <BottomNav />
     </section>
   );

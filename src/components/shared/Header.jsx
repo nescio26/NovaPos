@@ -56,7 +56,7 @@ const Header = () => {
         </div>
 
         {/* Separator */}
-        <div className="hidden md:block w-[1px] h-8 bg-white/10 mx-1"></div>
+        <div className="hidden md:block w-1px h-8 bg-white/10 mx-1"></div>
 
         {/* User Profile - More compact and pro */}
         <div className="flex items-center gap-3 pl-2 group cursor-pointer">
