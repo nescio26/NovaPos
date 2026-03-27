@@ -2,15 +2,38 @@ import React, { useState } from "react";
 import { menus } from "../../constants";
 import { GrRadialSelected } from "react-icons/gr";
 import { FaPlus, FaMinus, FaShoppingCart } from "react-icons/fa";
+import { useDispatch } from "react-redux";
+import { addItems } from "../../redux/slices/cartSlice"; // ✅ matches export
 
 const MenuContainer = () => {
   const [selectedCategory, setSelectedCategory] = useState(menus[0]);
   const [counts, setCounts] = useState({});
-
+  const dispatch = useDispatch();
   const updateCount = (id, delta) => {
     setCounts((prev) => ({
       ...prev,
       [id]: Math.max(0, (prev[id] || 0) + delta),
+    }));
+  };
+
+  const handleAddToCart = (item) => {
+    const itemCount = counts[item.id] || 0;
+    if (itemCount === 0) return;
+
+    const { name, price } = item;
+    const newObj = {
+      id: new Date(),
+      name,
+      pricePerQuantity: price,
+      quantity: itemCount,
+      price: price * itemCount,
+    };
+
+    dispatch(addItems(newObj));
+
+    setCounts((prev) => ({
+      ...prev,
+      [item.id]: 0,
     }));
   };
 
@@ -39,8 +62,8 @@ const MenuContainer = () => {
                 )}
               </div>
               <p
-                className={`text-[10px] font-black uppercase tracking-widest ${
-                  isSelected ? "text-indigo-200" : "text-slate-500"
+                className={`text-[11px] font-bold uppercase tracking-widest ${
+                  isSelected ? "text-white" : "text-blue-300"
                 }`}
               >
                 {menu.items.length} Options
@@ -63,7 +86,7 @@ const MenuContainer = () => {
             >
               <div className="flex justify-between items-start w-full">
                 <div className="flex flex-col gap-1">
-                  <h1 className="text-slate-100 text-lg font-black tracking-tight leading-none uppercase">
+                  <h1 className="text-slate-100 text-lg font-black tracking-normal leading-none uppercase">
                     {item.name}
                   </h1>
                   <p className="text-indigo-400 text-[11px] font-black">
@@ -72,13 +95,16 @@ const MenuContainer = () => {
                 </div>
 
                 {/* ACTION BUTTON */}
-                <button className="bg-slate-900 border border-white/10 text-emerald-500 p-2.5 rounded-xl hover:bg-emerald-500 hover:text-white transition-all active:scale-90">
+                <button
+                  onClick={() => handleAddToCart(item)}
+                  className="bg-slate-900 border border-white/10 text-emerald-500 p-2.5 rounded-xl hover:bg-emerald-500 hover:text-white transition-all active:scale-90"
+                >
                   <FaShoppingCart size={16} />
                 </button>
               </div>
 
               <div className="flex items-center justify-between w-full mt-4">
-                <span className="text-slate-500 text-[9px] font-black uppercase tracking-[0.2em]">
+                <span className="text-slate-200 text-[12px] font-black uppercase tracking-[0.2rem]">
                   Quantity
                 </span>
 

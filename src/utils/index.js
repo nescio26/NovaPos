@@ -24,3 +24,30 @@ export const getBgColor = () => {
   const color = bgarr[randomBg];
   return color;
 };
+
+export const getAvatarName = (name) => {
+  if (!name) return "";
+
+  return name
+    .split(" ")
+    .map((world) => world[0])
+    .join("")
+    .toUpperCase();
+};
+
+export const formatDate = (date) => {
+  return date.toLocaleDateString("en-GB", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+};
+
+export const formatTime = (date) => {
+  return date.toLocaleTimeString("en-GB", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true,
+  });
+};

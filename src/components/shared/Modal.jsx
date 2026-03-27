@@ -1,39 +1,38 @@
 import React from "react";
 import { IoClose } from "react-icons/io5";
 
-const Modal = ({ title, onClose, isOpen, children }) => {
+const Modal = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-      {/* THE BACKDROP: 
-         Changed bg-opacity to 40% and increased blur to 'md' 
-         This keeps the background visible but puts the focus on the modal.
-      */}
+      {/* BACKDROP - Deep Blur Effect */}
       <div
-        className="absolute inset-0 bg-slate-900/40 backdrop-blur-md transition-opacity duration-300"
+        className="absolute inset-0 bg-slate-950/60 backdrop-blur-md transition-opacity"
         onClick={onClose}
       />
 
-      {/* MODAL BOX */}
-      <div className="relative z-10 bg-slate-900/90 border border-white/10 shadow-2xl w-full max-w-lg rounded-[2.5rem] overflow-hidden animate-in fade-in zoom-in duration-300">
+      {/* MODAL CONTAINER */}
+      <div className="relative bg-slate-900 border border-white/10 w-full max-w-md rounded-[2.5rem] shadow-[0_30px_100px_rgba(0,0,0,0.8)] overflow-hidden transform transition-all animate-in fade-in zoom-in duration-300">
         {/* HEADER */}
-        <div className="flex justify-between items-center px-8 py-6 border-b border-white/5 bg-white/[0.02]">
-          <h2 className="text-xl text-white font-black tracking-tight uppercase italic">
+        <div className="flex items-center justify-between px-8 py-6 border-b border-white/5 bg-slate-900/50">
+          <h2 className="text-white text-lg font-black uppercase tracking-tighter">
             {title}
             <span className="text-indigo-500">.</span>
           </h2>
-
           <button
-            className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-all active:scale-90"
             onClick={onClose}
+            className="p-2 rounded-full bg-slate-800 text-slate-400 hover:text-white hover:bg-rose-500 transition-all active:scale-90"
           >
             <IoClose size={20} />
           </button>
         </div>
 
-        {/* CONTENT */}
+        {/* CONTENT AREA */}
         <div className="p-8">{children}</div>
+
+        {/* DECORATIVE BLUR (Optional) */}
+        <div className="absolute -bottom-10 -left-10 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
       </div>
     </div>
   );

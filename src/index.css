@@ -2,18 +2,74 @@
 
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 
+:root {
+  /* Prevent text selection during fast tapping in a busy shift */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 body {
   font-family: "Inter", sans-serif;
+  /* Prevents the 'pull-to-refresh' bounce effect on iPads */
+  overscroll-behavior-y: none;
+  /* Makes the background feel solid and premium */
+  background-color: #0f172a;
+  /* Smooths out font rendering on high-res Retina displays */
+  -webkit-font-smoothing: antialiased;
+}
+
+/* TABLET OPTIMIZATIONS */
+@layer base {
+  * {
+    /* REMOVES the 300ms tap delay on iOS (Essential for POS) */
+    touch-action: manipulation;
+    /* Removes the ugly grey/blue box when tapping buttons */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Allow inputs/textareas to be selectable so staff can type names */
+  input,
+  textarea {
+    -webkit-user-select: text;
+    user-select: text;
+  }
 }
 
 @layer utilities {
-  /* This hides the scrollbar but keeps scrolling functional */
-  .custom-scrollbar::-webkit-scrollbar {
+  /* Hides scrollbar but keeps momentum scrolling for iPad */
+  .custom-scrollbar::-webkit-scrollbar,
+  .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
 
-  .custom-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
+  .custom-scrollbar,
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    /* Enables "Elastic" scrolling on iOS */
+    -webkit-overflow-scrolling: touch;
   }
+
+  /* iPad Pro Portrait Fix: Ensures content doesn't get cut off by the 'pill' bar */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+.glass-nav {
+  @apply bg-slate-900/95 backdrop-blur-md border-t border-slate-800;
+}
+
+/* PREMIUM "TAP" FEEDBACK */
+/* Add this class to your buttons/cards for a haptic-like feel */
+.active-press:active {
+  transform: scale(0.96);
+  transition: transform 0.1s ease;
+}
+
+.content-viewport {
+  height: 100dvh; /* Dynamic Viewport Height for mobile browsers */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }

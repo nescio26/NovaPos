@@ -2,23 +2,28 @@ import React from "react";
 import { getRandomBg } from "../../utils";
 import { FaUsers } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { updateTable } from "../../redux/slices/customerSlice";
 
 const TableCard = ({ name, status, initials, seats }) => {
   const navigate = useNavigate();
+
+  const dispatch = useDispatch();
 
   const isBooked = status?.toLowerCase() === "booked";
 
   const bgColor = React.useMemo(() => getRandomBg(), []);
 
-  const handleClick = () => {
-    if (isBooked) return;
+  const handleClick = (name) => {
+    if (status === "booked") return;
+    dispatch(updateTable({ tableNo: name }));
     navigate(`/menu`);
   };
 
   return (
     <div
-      onClick={handleClick}
-      className={`ggroup flex flex-col gap-3 bg-slate-700 hover:bg-slate-700/50 border border-white/10 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 w-full shadow-xl ${
+      onClick={() => handleClick(name)}
+      className={`group flex flex-col gap-3 bg-slate-700 hover:bg-slate-700/50 border border-white/10 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 w-full shadow-xl ${
         isBooked ? "cursor-not-allowed opacity-40" : "cursor-pointer"
       }`}
     >

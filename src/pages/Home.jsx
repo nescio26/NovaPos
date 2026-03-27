@@ -12,7 +12,8 @@ const Home = () => {
   return (
     <div className="h-screen bg-[#0F172A] flex flex-col text-slate-100 font-sans selection:bg-indigo-500/30 overflow-hidden">
       {/* MAIN CONTENT */}
-      <div className="flex flex-1 flex-col md:flex-row overflow-hidden pb-20 md:pb-0">
+      <div className="flex flex-1 flex-col lg:flex-row overflow-hidden">
+        {" "}
         {/* LEFT - DASHBOARD SCROLLABLE AREA */}
         <div className="flex-1 md:flex-[2.5] lg:flex-[3] p-6 lg:p-10 space-y-10 overflow-y-auto custom-scrollbar">
           {/* GREETING SECTION */}
@@ -55,7 +56,6 @@ const Home = () => {
             <PopularDishes />
           </div>
         </div>
-
         {/* RIGHT - PREMIUM CHECKOUT CART */}
         <div className="flex-1 md:flex-[1.2] lg:flex-[1] bg-white text-slate-900 md:m-5 md:rounded-[3rem] shadow-[0_40px_80px_rgba(0,0,0,0.4)] flex flex-col border border-white/20 relative overflow-hidden">
           {/* Header of the Cart */}
