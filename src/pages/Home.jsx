@@ -4,114 +4,75 @@ import Greetings from "../components/home/Greetings";
 import MiniCard from "../components/home/MiniCard";
 import RecentOrder from "../components/home/RecentOrder";
 import PopularDishes from "../components/home/PopularDishes";
-import Header from "../components/shared/Header"; // Import the premium header
 import { BsCashCoin } from "react-icons/bs";
 import { GrInProgress } from "react-icons/gr";
 
 const Home = () => {
   return (
-    <div className="h-screen bg-[#0F172A] flex flex-col text-slate-100 font-sans selection:bg-indigo-500/30 overflow-hidden">
-      {/* MAIN CONTENT */}
+    <div className="h-screen bg-[#F8F9FD] dark:bg-[#0B0E11] flex flex-col text-[#1A1D21] dark:text-white font-sans selection:bg-orange-500/30 overflow-hidden transition-colors duration-300">
       <div className="flex flex-1 flex-col lg:flex-row overflow-hidden">
-        {" "}
-        {/* LEFT - DASHBOARD SCROLLABLE AREA */}
-        <div className="flex-1 md:flex-[2.5] lg:flex-[3] p-6 lg:p-10 space-y-10 overflow-y-auto custom-scrollbar">
-          {/* GREETING SECTION */}
-          <div className="relative overflow-hidden bg-slate-800/40 backdrop-blur-md p-8 rounded-[2.5rem] border border-white/5 shadow-2xl">
+        {/* LEFT AREA */}
+        <div className="flex-1 lg:flex-[3] p-4 sm:p-6 lg:p-10 space-y-8 lg:space-y-10 overflow-y-auto custom-scrollbar">
+          {/* GREETING SECTION: Added dark:bg-[#16191D] and dark:border-white/5 */}
+          <div className="relative overflow-hidden bg-white dark:bg-[#16191D] p-6 sm:p-8 rounded-[2rem] lg:rounded-[2.5rem] border border-slate-100 dark:border-white/5 shadow-sm">
             <Greetings />
-            <div className="absolute -top-24 -right-24 w-64 h-64 bg-indigo-500/10 rounded-full blur-[80px]"></div>
+            <div className="absolute -top-24 -right-24 w-64 h-64 bg-orange-500/10 rounded-full blur-[80px]"></div>
           </div>
 
           {/* STATS GRID */}
           <div className="space-y-6">
             <div className="flex items-center gap-4">
-              <h2 className="text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">
+              <h2 className="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-[0.3em]">
                 Business Pulse
               </h2>
-              <div className="h-[1px] flex-1 bg-white/5"></div>
+              <div className="h-[1px] flex-1 bg-slate-200/50 dark:bg-white/5"></div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {/* These MiniCards will need 'dark:' classes inside their own component files too! */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
               <MiniCard
                 title="Total Earnings"
-                icon={<BsCashCoin className="text-indigo-400" />}
+                icon={<BsCashCoin className="text-orange-500" />}
                 number="RM 512.00"
-                footerNum="+12% this week"
-                trend="up"
               />
               <MiniCard
                 title="In Progress"
-                icon={<GrInProgress className="text-emerald-400" />}
+                icon={<GrInProgress className="text-blue-500" />}
                 number="16"
-                footerNum="Orders pending"
               />
             </div>
           </div>
 
-          {/* RECENT ORDERS TABLE */}
           <RecentOrder />
-
-          {/* POPULAR DISHES - Now part of the dashboard flow */}
-          <div className="pb-10">
-            <PopularDishes />
-          </div>
+          <PopularDishes />
         </div>
-        {/* RIGHT - PREMIUM CHECKOUT CART */}
-        <div className="flex-1 md:flex-[1.2] lg:flex-[1] bg-white text-slate-900 md:m-5 md:rounded-[3rem] shadow-[0_40px_80px_rgba(0,0,0,0.4)] flex flex-col border border-white/20 relative overflow-hidden">
-          {/* Header of the Cart */}
+
+        {/* RIGHT AREA: THE CART SIDEBAR */}
+        <div className="hidden lg:flex lg:flex-[1.1] bg-white dark:bg-[#16191D] m-5 rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.04)] flex-col border border-slate-100 dark:border-white/5 relative overflow-hidden transition-colors">
           <div className="p-8 pb-4">
-            <div className="flex justify-between items-center mb-1">
-              <h1 className="text-2xl font-black tracking-tighter">
-                My Cart<span className="text-indigo-600">.</span>
-              </h1>
-              <span className="bg-slate-100 px-3 py-1 rounded-full text-[10px] font-black text-slate-500 uppercase">
-                0 Items
-              </span>
-            </div>
-            <p className="text-slate-400 text-xs font-medium italic">
-              Table #04 • Dinning In
-            </p>
+            <h1 className="text-2xl font-black tracking-tighter text-[#1A1D21] dark:text-white">
+              My Cart<span className="text-orange-500">.</span>
+            </h1>
           </div>
 
-          {/* CART ITEMS AREA (Empty State) */}
+          {/* EMPTY STATE */}
           <div className="flex-1 flex flex-col items-center justify-center p-10 text-center">
-            <div className="w-20 h-20 bg-slate-50 rounded-[2rem] flex items-center justify-center mb-4 border border-slate-100 shadow-inner group cursor-pointer hover:scale-110 transition-transform">
-              <span className="text-3xl opacity-30 group-hover:opacity-100 transition-opacity">
-                🛒
-              </span>
+            <div className="w-24 h-24 bg-[#F8F9FD] dark:bg-white/5 rounded-[2.5rem] flex items-center justify-center mb-6 border border-slate-100 dark:border-white/5">
+              <span className="text-4xl opacity-20 grayscale">🍔</span>
             </div>
-            <h3 className="text-slate-800 font-bold tracking-tight">
-              Your cart is empty
+            <h3 className="text-[#1A1D21] dark:text-white font-bold text-lg">
+              Start an Order
             </h3>
-            <p className="text-slate-400 text-xs mt-2 max-w-[150px]">
-              Select items from the menu to start an order
-            </p>
           </div>
 
-          {/* CHECKOUT SUMMARY FOOTER */}
-          <div className="p-8 bg-slate-50/80 backdrop-blur-md border-t border-slate-100 space-y-4">
-            <div className="space-y-2">
-              <div className="flex justify-between text-slate-400 text-xs font-bold uppercase tracking-widest">
-                <span>Subtotal</span>
-                <span>RM 0.00</span>
-              </div>
-              <div className="flex justify-between text-slate-900 text-xl font-black tracking-tighter">
-                <span>Total</span>
-                <span className="text-indigo-600">RM 0.00</span>
-              </div>
-            </div>
-
-            <button className="w-full py-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-[1.5rem] font-black text-sm uppercase tracking-widest shadow-xl shadow-indigo-200 hover:shadow-indigo-300 active:scale-[0.98] transition-all">
+          {/* FOOTER */}
+          <div className="p-8 bg-white dark:bg-[#16191D] border-t border-slate-100 dark:border-white/5">
+            <button className="w-full py-5 bg-[#FF5C00] text-white rounded-2xl font-black text-sm uppercase tracking-widest">
               Complete Payment
             </button>
           </div>
-
-          {/* Decorative design element */}
-          <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-indigo-500/5 rounded-full blur-3xl"></div>
         </div>
       </div>
-
-      {/* BOTTOM NAV */}
       <BottomNav />
     </div>
   );

@@ -18,9 +18,7 @@ const BottomNav = () => {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
 
-  // const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
-
   const increment = () => guestCount < 12 && setGuestCount((prev) => prev + 1);
   const decrement = () => guestCount > 1 && setGuestCount((prev) => prev - 1);
 
@@ -39,52 +37,55 @@ const BottomNav = () => {
         onClose={closeModal}
         title="New Order Registration"
       >
-        <div className="flex flex-col gap-5">
-          <div className="grid grid-cols-1 gap-4">
-            <div className="flex flex-col gap-1.5">
-              <label className="text-slate-400 text-[11px] font-bold uppercase tracking-wider">
+        <div className="flex flex-col gap-6">
+          <div className="grid grid-cols-1 gap-5">
+            {/* NAME INPUT */}
+            <div className="flex flex-col gap-2">
+              <label className="text-black dark:text-white text-[13px] font-black uppercase tracking-[0.2em]">
                 Customer Name
               </label>
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 type="text"
-                placeholder="Full Name"
-                className="bg-slate-800/50 border border-slate-700 rounded-lg p-3 text-sm text-white focus:border-indigo-500 focus:outline-none transition-colors"
+                placeholder="Customer Name"
+                className="bg-[#F8F9FD] dark:bg-white/5 border border-slate-100 dark:border-white/5 rounded-2xl p-4 text-sm text-[#1A1D21] dark:text-white font-bold focus:border-orange-500/50 focus:outline-none transition-all placeholder:text-slate-500"
               />
             </div>
 
-            <div className="flex flex-col gap-1.5">
-              <label className="text-slate-400 text-[11px] font-bold uppercase tracking-wider">
+            {/* PHONE INPUT */}
+            <div className="flex flex-col gap-2">
+              <label className="text-black dark:text-white text-[13px] font-black uppercase tracking-[0.2em]">
                 Contact Number
               </label>
               <input
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 type="tel"
-                placeholder="Phone"
-                className="bg-slate-800/50 border border-slate-700 rounded-lg p-3 text-sm text-white focus:border-indigo-500 focus:outline-none transition-colors"
+                placeholder="Phone Number"
+                className="bg-[#F8F9FD] dark:bg-white/5 border border-slate-100 dark:border-white/5 rounded-2xl p-4 text-sm text-[#1A1D21] dark:text-white font-bold focus:border-orange-500/50 focus:outline-none transition-all placeholder:text-slate-500"
               />
             </div>
           </div>
 
-          <div className="flex flex-col gap-1.5">
-            <label className="text-slate-400 text-[11px] font-bold uppercase tracking-wider">
+          {/* GUEST COUNTER */}
+          <div className="flex flex-col gap-2">
+            <label className="text-black dark:text-white text-[13px] font-black uppercase tracking-[0.2em]">
               Total Guests
             </label>
-            <div className="flex items-center justify-between bg-slate-800/80 border border-slate-700 rounded-lg p-2">
+            <div className="flex items-center justify-between bg-[#F8F9FD] dark:bg-white/5 border border-slate-100 dark:border-white/5 rounded-2xl p-2 shadow-inner">
               <button
                 onClick={decrement}
-                className="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 rounded-md transition-all text-xl"
+                className="w-12 h-12 flex items-center justify-center text-slate-400 dark:text-slate-500 hover:text-[#FF5C00] hover:bg-white dark:hover:bg-white/10 rounded-xl transition-all text-2xl font-bold shadow-sm"
               >
                 &minus;
               </button>
-              <span className="text-white font-semibold text-sm">
-                {guestCount} {guestCount === 1 ? "Guest" : "Guests"}
+              <span className="text-[#1A1D21] dark:text-white font-bold text-m tracking-normal">
+                {guestCount} {guestCount === 1 ? "GUEST" : "GUESTS"}
               </span>
               <button
                 onClick={increment}
-                className="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-slate-700 rounded-md transition-all text-xl"
+                className="w-12 h-12 flex items-center justify-center text-slate-400 dark:text-slate-500 hover:text-[#FF5C00] hover:bg-white dark:hover:bg-white/10 rounded-xl transition-all text-2xl font-bold shadow-sm"
               >
                 &#43;
               </button>
@@ -93,7 +94,7 @@ const BottomNav = () => {
 
           <button
             onClick={handleCreateOrder}
-            className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm py-3.5 rounded-lg transition-colors mt-2 active-press"
+            className="w-full bg-[#FF5C00] hover:bg-[#e65300] text-white font-black text-xs uppercase tracking-[0.2em] py-4.5 rounded-[1.5rem] transition-all mt-2 active-press shadow-lg shadow-orange-500/20"
           >
             Confirm & Select Table
           </button>
@@ -101,39 +102,38 @@ const BottomNav = () => {
       </Modal>
 
       {/* FIXED NAVIGATION BAR */}
-      {/* Changed 'relative' to 'fixed bottom-0 left-0 right-0' */}
-      <div className="fixed bottom-0 left-0 right-0 h-20 bg-slate-900/95 backdrop-blur-md border-t border-slate-800 flex justify-around items-center z-50 px-4 pb-safe">
+      <div className="fixed bottom-0 left-0 right-0 h-24 bg-white/80 dark:bg-[#0B0E11]/80 backdrop-blur-xl border-t border-slate-100 dark:border-white/5 flex justify-around items-center z-50 px-4 pb-safe shadow-[0_-10px_40px_rgba(0,0,0,0.03)] transition-colors duration-300">
         <NavButton
-          icon={<FaHome size={20} />}
+          icon={<FaHome size={22} />}
           label="Home"
           onClick={() => navigate("/")}
           active={isActive("/")}
         />
         <NavButton
-          icon={<MdOutlineReorder size={20} />}
+          icon={<MdOutlineReorder size={22} />}
           label="Orders"
           onClick={() => navigate("/orders")}
           active={isActive("/orders")}
         />
 
-        {/* CENTER ACTION */}
-        <div className="relative -top-6">
+        {/* CENTER ACTION (FAB) */}
+        <div className="relative -top-8">
           <button
             onClick={() => setIsModalOpen(true)}
-            className="p-5 rounded-[2rem] bg-indigo-600 text-white shadow-2xl shadow-indigo-600/40 active-press border-4 border-[#0F172A]"
+            className="p-5 rounded-[2.2rem] bg-[#FF5C00] text-white shadow-2xl shadow-orange-500/40 active-press border-[6px] border-[#F8F9FD] dark:border-[#0B0E11] transition-all hover:scale-105"
           >
-            <BiSolidDish size={26} />
+            <BiSolidDish size={28} />
           </button>
         </div>
 
         <NavButton
-          icon={<MdTableBar size={20} />}
+          icon={<MdTableBar size={22} />}
           label="Tables"
           onClick={() => navigate("/tables")}
           active={isActive("/tables")}
         />
         <NavButton
-          icon={<CiCircleMore size={20} />}
+          icon={<CiCircleMore size={22} />}
           label="More"
           onClick={() => navigate("/more")}
           active={isActive("/more")}
@@ -146,25 +146,23 @@ const BottomNav = () => {
 const NavButton = ({ icon, label, onClick, active }) => (
   <button
     onClick={onClick}
-    className={`flex flex-col items-center gap-1 w-16 transition-all duration-300 active:scale-90 ${
+    className={`flex flex-col items-center gap-1.5 w-16 transition-all duration-300 active:scale-90 ${
       active
-        ? "text-indigo-400 scale-110"
-        : "text-slate-500 hover:text-slate-300"
+        ? "text-[#FF5C00] scale-105"
+        : "text-slate-400 dark:text-white hover:text-slate-600 dark:hover:text-slate-400"
     }`}
   >
-    <div
-      className={active ? "drop-shadow-[0_0_8px_rgba(129,140,248,0.5)]" : ""}
-    >
+    <div className={active ? "drop-shadow-[0_4px_8px_rgba(255,92,0,0.2)]" : ""}>
       {icon}
     </div>
     <span
-      className={`text-[9px] font-black uppercase tracking-widest ${active ? "opacity-100" : "opacity-60"}`}
+      className={`text-[9px] font-black uppercase tracking-[0.15em] ${
+        active ? "opacity-100" : "opacity-50"
+      }`}
     >
       {label}
     </span>
-    {active && (
-      <div className="w-1 h-1 bg-indigo-400 rounded-full mt-0.5 animate-pulse" />
-    )}
+    {active && <div className="w-1 h-1 bg-[#FF5C00] rounded-full mt-0.5" />}
   </button>
 );
 

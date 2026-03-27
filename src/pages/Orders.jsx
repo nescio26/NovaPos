@@ -7,42 +7,48 @@ const Orders = () => {
   const [status, setStatus] = useState("all");
 
   const categories = [
-    { id: "all", label: "All" },
-    { id: "progress", label: "In Progress" },
+    { id: "all", label: "All Orders" },
+    { id: "progress", label: "Preparing" },
     { id: "ready", label: "Ready" },
-    { id: "completed", label: "Done" },
+    { id: "completed", label: "Served" },
   ];
 
   return (
-    // 'h-screen' and 'flex-col' keeps the layout contained to the device height
-    <section className="h-screen bg-[#0F172A] flex flex-col text-slate-100 overflow-hidden">
-      {/* HEADER: Flex-none keeps it from scrolling away */}
-      <header className="flex-none p-6 pb-4 border-b border-white/5 bg-slate-900/40 backdrop-blur-md z-10">
+    <section className="h-screen bg-[#F8F9FD] dark:bg-[#0B0E11] flex flex-col text-[#1A1D21] dark:text-white transition-colors duration-300 overflow-hidden">
+      {/* HEADER: Sticky with glass effect */}
+      <header className="flex-none p-6 pb-4 border-b border-slate-100 dark:border-white/5 bg-white/80 dark:bg-[#16191D]/80 backdrop-blur-md z-10">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-4">
             <BackButton />
-            <h1 className="text-2xl font-black uppercase italic tracking-tighter">
-              Orders<span className="text-indigo-500">.</span>
-            </h1>
+            <div>
+              <h1 className="text-2xl font-black uppercase italic tracking-tighter leading-none dark:text-white">
+                Orders<span className="text-[#FF5C00]">.</span>
+              </h1>
+              <p className="text-[9px] text-slate-400 dark:text-slate-500 font-black uppercase tracking-[0.2em] mt-1">
+                Live Kitchen Sync
+              </p>
+            </div>
           </div>
-          <div className="flex items-center gap-2 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[9px] font-black uppercase text-emerald-500">
+
+          {/* STATUS INDICATOR: Neon Glow in Dark Mode */}
+          <div className="flex items-center gap-2 bg-emerald-50 dark:bg-emerald-500/10 px-3 py-1.5 rounded-xl border border-emerald-100 dark:border-emerald-500/20">
+            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+            <span className="text-[9px] font-black uppercase text-emerald-600 dark:text-emerald-400 tracking-widest">
               Kitchen Live
             </span>
           </div>
         </div>
 
-        {/* TABS */}
-        <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-2">
+        {/* TABS: Updated Pill Buttons */}
+        <div className="flex items-center gap-3 overflow-x-auto no-scrollbar pb-2">
           {categories.map((cat) => (
             <button
               key={cat.id}
               onClick={() => setStatus(cat.id)}
-              className={`px-6 py-2.5 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all ${
+              className={`px-6 py-3 rounded-2xl text-[10px] font-black uppercase tracking-[0.15em] transition-all whitespace-nowrap active-press ${
                 status === cat.id
-                  ? "bg-indigo-600 text-white shadow-lg shadow-indigo-600/20"
-                  : "bg-white/5 text-slate-500 hover:text-white"
+                  ? "bg-[#FF5C00] text-white shadow-lg shadow-orange-500/20"
+                  : "bg-white dark:bg-white/5 text-slate-400 dark:text-slate-500 border border-slate-100 dark:border-white/5 hover:text-[#1A1D21] dark:hover:text-white"
               }`}
             >
               {cat.label}
@@ -51,20 +57,18 @@ const Orders = () => {
         </div>
       </header>
 
-      {/* CONTENT AREA: flex-1 allows it to grow and scroll */}
-      <main className="flex-1 overflow-y-auto custom-scrollbar bg-[#0B1222] p-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4">
-          {/* Your Data Mapping Here */}
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((i) => (
+      {/* CONTENT AREA */}
+      <main className="flex-1 overflow-y-auto custom-scrollbar p-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
             <OrdersCard key={i} />
           ))}
         </div>
 
-        {/* SPACER: Adds room so the last card isn't hidden by the BottomNav */}
-        <div className="h-32" aria-hidden="true" />
+        {/* BOTTOM SPACER */}
+        <div className="h-40" aria-hidden="true" />
       </main>
 
-      {/* FIXED NAV is rendered here */}
       <BottomNav />
     </section>
   );

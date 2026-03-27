@@ -14,6 +14,7 @@ const Greetings = () => {
       minute: "2-digit",
       hour12: true,
     });
+
   const formatDate = (date) =>
     date.toLocaleDateString("en-GB", {
       weekday: "short",
@@ -29,33 +30,44 @@ const Greetings = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-      <div className="space-y-1">
-        <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight">
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 sm:gap-4">
+      {/* LEFT: GREETING & STATUS */}
+      <div className="space-y-2 sm:space-y-1">
+        {/* Added dark:text-white */}
+        <h1 className="text-3xl md:text-4xl font-black text-[#1A1D21] dark:text-white tracking-tight">
           {getGreeting()}
-          <span className="text-indigo-500">.</span>
+          <span className="text-[#FF5C00]">.</span>
         </h1>
+
         <div className="flex items-center gap-2">
+          {/* Status Indicator */}
           <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="animate-ping absolute h-full w-full rounded-full bg-emerald-400 opacity-20"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
           </span>
-          <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest">
-            System Online • Ready
+          {/* Updated text-slate colors for dark mode readability */}
+          <p className="text-slate-400 dark:text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em]">
+            System Online •{" "}
+            <span className="text-slate-600 dark:text-slate-400">
+              Terminal 01
+            </span>
           </p>
         </div>
       </div>
 
-      <div className="bg-white/5 border border-white/5 px-6 py-3 rounded-[2rem] backdrop-blur-md">
-        <div className="flex items-baseline gap-2">
-          <h2 className="text-3xl font-mono font-bold text-white tabular-nums tracking-tighter">
+      {/* RIGHT: ELEGANT CLOCK CARD */}
+      {/* Added dark:bg-white/5 and dark:border-white/5 */}
+      <div className="w-full sm:w-auto bg-[#F8F9FD] dark:bg-white/5 border border-slate-100 dark:border-white/5 px-6 py-4 rounded-[2.5rem] shadow-sm transition-colors duration-300">
+        <div className="flex items-baseline justify-between sm:justify-start gap-2">
+          {/* Added dark:text-white */}
+          <h2 className="text-3xl font-bold text-[#1A1D21] dark:text-white tabular-nums tracking-tighter">
             {formatTime(dateTime).split(" ")[0]}
           </h2>
-          <span className="text-xs font-black text-indigo-400 uppercase">
+          <span className="text-xs font-black text-[#FF5C00] uppercase italic tracking-widest">
             {formatTime(dateTime).split(" ")[1]}
           </span>
         </div>
-        <p className="text-slate-500 text-[10px] font-black uppercase tracking-widest text-right">
+        <p className="text-slate-400 dark:text-slate-500 text-[9px] font-bold uppercase tracking-[0.2em] text-right mt-0.5">
           {formatDate(dateTime)}
         </p>
       </div>

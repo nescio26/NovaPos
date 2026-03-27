@@ -1,33 +1,49 @@
 @import "tailwindcss";
 
+/* 1. Define the Dark Mode Variant for v4 */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 
 :root {
-  /* Prevent text selection during fast tapping in a busy shift */
   -webkit-user-select: none;
   user-select: none;
+
+  /* Light Theme Variables */
+  --bg-main: #f8f9fd;
+  --text-main: #1a1d21;
+  --nav-bg: #ffffff;
+  --border-subtle: #f1f5f9; /* slate-100 */
+}
+
+/* 2. Define Dark Theme Variables */
+.dark {
+  --bg-main: #0b0e11;
+  --text-main: #ffffff;
+  --nav-bg: #16191d;
+  --border-subtle: rgba(255, 255, 255, 0.05);
 }
 
 body {
   font-family: "Inter", sans-serif;
-  /* Prevents the 'pull-to-refresh' bounce effect on iPads */
   overscroll-behavior-y: none;
-  /* Makes the background feel solid and premium */
-  background-color: #0f172a;
-  /* Smooths out font rendering on high-res Retina displays */
+
+  /* Use the variables here */
+  background-color: var(--bg-main);
+  color: var(--text-main);
+
   -webkit-font-smoothing: antialiased;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 /* TABLET OPTIMIZATIONS */
 @layer base {
   * {
-    /* REMOVES the 300ms tap delay on iOS (Essential for POS) */
     touch-action: manipulation;
-    /* Removes the ugly grey/blue box when tapping buttons */
     -webkit-tap-highlight-color: transparent;
   }
-
-  /* Allow inputs/textareas to be selectable so staff can type names */
   input,
   textarea {
     -webkit-user-select: text;
@@ -36,7 +52,6 @@ body {
 }
 
 @layer utilities {
-  /* Hides scrollbar but keeps momentum scrolling for iPad */
   .custom-scrollbar::-webkit-scrollbar,
   .no-scrollbar::-webkit-scrollbar {
     display: none;
@@ -46,30 +61,45 @@ body {
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
-    /* Enables "Elastic" scrolling on iOS */
     -webkit-overflow-scrolling: touch;
   }
 
-  /* iPad Pro Portrait Fix: Ensures content doesn't get cut off by the 'pill' bar */
   .pb-safe {
     padding-bottom: env(safe-area-inset-bottom);
   }
+
+  /* UPDATED: Glass nav now reacts to dark mode variables */
+  .glass-nav {
+    background-color: var(--nav-bg);
+    border-top: 1px solid var(--border-subtle);
+    @apply shadow-[0_-4px_20px_rgba(0,0,0,0.03)];
+  }
+
+  .content-viewport {
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
 }
 
-.glass-nav {
-  @apply bg-slate-900/95 backdrop-blur-md border-t border-slate-800;
-}
-
-/* PREMIUM "TAP" FEEDBACK */
-/* Add this class to your buttons/cards for a haptic-like feel */
 .active-press:active {
   transform: scale(0.96);
   transition: transform 0.1s ease;
 }
 
-.content-viewport {
-  height: 100dvh; /* Dynamic Viewport Height for mobile browsers */
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
+.btn-primary {
+  background-color: #ff5c00;
+  @apply text-white shadow-lg shadow-orange-500/20 hover:bg-[#e65300] transition-all;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
 }

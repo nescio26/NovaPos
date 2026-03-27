@@ -8,10 +8,10 @@ const BackButton = () => {
   return (
     <button
       onClick={() => navigate(-1)}
-      className="group flex items-center justify-center w-12 h-12 bg-slate-800/40 backdrop-blur-md border border-white rounded-2xl text-slate-400 hover:text-white hover:bg-indigo-700/60 hover:border-indigo-500/50 hover:shadow-[0_0_20px_rgba(99,102,241,0.2)] transition-all duration-300 active:scale-95"
+      className="group flex items-center justify-center w-12 h-12 bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5 rounded-2xl text-slate-400 dark:text-slate-500 hover:text-[#FF5C00] dark:hover:text-[#FF5C00] hover:bg-white dark:hover:bg-white/10 hover:border-[#FF5C00]/20 hover:shadow-lg hover:shadow-orange-500/10 transition-all duration-300 active:scale-90 active-press"
       aria-label="Go Back"
     >
-      <IoArrowBackOutline className="text-xl group-hover:-translate-x-1 transition-transform" />
+      <IoArrowBackOutline className="text-2xl group-hover:-translate-x-1.5 transition-transform duration-300" />
     </button>
   );
 };

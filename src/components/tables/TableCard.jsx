@@ -7,72 +7,97 @@ import { updateTable } from "../../redux/slices/customerSlice";
 
 const TableCard = ({ name, status, initials, seats }) => {
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
   const isBooked = status?.toLowerCase() === "booked";
 
+  // Memoize the background to prevent "flickering" colors on re-renders
   const bgColor = React.useMemo(() => getRandomBg(), []);
 
-  const handleClick = (name) => {
-    if (status === "booked") return;
-    dispatch(updateTable({ tableNo: name }));
+  const handleClick = (tableName) => {
+    if (isBooked) return;
+    dispatch(updateTable({ tableNo: tableName }));
     navigate(`/menu`);
   };
 
   return (
     <div
       onClick={() => handleClick(name)}
-      className={`group flex flex-col gap-3 bg-slate-700 hover:bg-slate-700/50 border border-white/10 p-4 rounded-2xl transition-all duration-300 hover:-translate-y-1 w-full shadow-xl ${
-        isBooked ? "cursor-not-allowed opacity-40" : "cursor-pointer"
+      className={`group flex flex-col gap-4 bg-white dark:bg-[#16191D] border border-slate-100 dark:border-white/5 p-5 rounded-[2rem] transition-all duration-500 hover:-translate-y-2 w-full shadow-sm hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-black/40 ${
+        isBooked
+          ? "cursor-not-allowed bg-slate-50/50 dark:bg-white/[0.02] grayscale-[0.5]"
+          : "cursor-pointer active-press"
       }`}
     >
-      {/* HEADER */}
-      <div className="flex items-center justify-between px-1">
+      {/* HEADER: Table Name & Status */}
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-slate-100 text-base font-black tracking-tight leading-none">
+          <h1 className="text-[#1A1D21] dark:text-white text-lg font-black tracking-tighter uppercase italic leading-none group-hover:text-[#FF5C00] transition-colors">
             {name}
           </h1>
 
           <div className="flex items-center gap-2 mt-2">
-            <FaUsers size={12} className="text-indigo-400/80" />
-            <span className="text-slate-200 text-[11px] font-black uppercase tracking-[0.1em]">
+            <FaUsers
+              size={12}
+              className={
+                isBooked
+                  ? "text-slate-300 dark:text-slate-600"
+                  : "text-[#FF5C00]/60"
+              }
+            />
+            <span className="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-widest">
               {seats} Seats
             </span>
           </div>
         </div>
 
         <span
-          className={`px-4 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border ${
+          className={`px-3 py-1.5 rounded-xl text-[9px] font-black uppercase tracking-[0.15em] border transition-all ${
             isBooked
-              ? "text-rose-400 bg-rose-500/10 border-rose-500/20"
-              : "text-emerald-400 bg-emerald-500/10 border-emerald-500/20"
+              ? "text-rose-500 bg-rose-50 dark:bg-rose-500/10 border-rose-100 dark:border-rose-500/20"
+              : "text-emerald-500 bg-emerald-50 dark:bg-emerald-500/10 border-emerald-100 dark:border-emerald-500/20"
           }`}
         >
           {status}
         </span>
       </div>
 
-      {/* AVATAR */}
+      {/* CENTER: Visual Identifier (Avatar) */}
       <div className="flex items-center justify-center py-4">
         <div
-          className={`w-16 h-16 rounded-full flex items-center justify-center text-white text-2xl font-black shadow-2xl transition-all duration-500 group-hover:scale-110 group-hover:rotate-3 border-4 border-white/5 ${bgColor}`}
+          className={`w-20 h-20 rounded-[2rem] flex items-center justify-center text-white text-2xl font-black shadow-lg transition-all duration-700 group-hover:scale-110 group-hover:rotate-6 border-4 border-white dark:border-[#1c2025] ${
+            isBooked ? "bg-slate-200 dark:bg-white/10" : bgColor
+          }`}
         >
-          {initials}
+          {isBooked ? (
+            <span className="text-slate-400 dark:text-slate-500 text-xs">
+              OCC
+            </span>
+          ) : (
+            initials
+          )}
         </div>
       </div>
 
-      {/* FOOTER */}
-      <div className="flex flex-col items-center gap-1.5 mt-2">
+      {/* FOOTER: Interaction Indicator */}
+      <div className="flex flex-col items-center gap-2">
         <p
-          className={`text-[10px] font-black uppercase tracking-[0.3em] ${
-            isBooked ? "text-rose-500/90" : "text-green-300"
+          className={`text-[9px] font-black uppercase tracking-[0.2em] transition-colors ${
+            isBooked
+              ? "text-slate-300 dark:text-slate-600"
+              : "text-emerald-500 dark:text-emerald-400 group-hover:text-[#FF5C00]"
           }`}
         >
           {isBooked ? "In Service" : "Available Now"}
         </p>
 
-        <div className="h-1 w-12 rounded-full bg-white/5 group-hover:w-20 group-hover:bg-indigo-500/30 transition-all duration-500"></div>
+        <div
+          className={`h-1 rounded-full transition-all duration-500 ${
+            isBooked
+              ? "w-8 bg-slate-100 dark:bg-white/5"
+              : "w-12 bg-slate-100 dark:bg-white/5 group-hover:w-24 group-hover:bg-[#FF5C00]"
+          }`}
+        />
       </div>
     </div>
   );
