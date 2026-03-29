@@ -23,7 +23,7 @@ const MenuContainer = () => {
 
     const { name, price } = item;
     const newObj = {
-      id: new Date(), // Use Date.now() for serializable ID
+      id: Date.now(),
       name,
       pricePerQuantity: price,
       quantity: itemCount,

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Greetings = () => {
+  const userData = useSelector((state) => state.user);
   const [dateTime, setDateTime] = useState(new Date());
 
   useEffect(() => {
@@ -35,7 +37,7 @@ const Greetings = () => {
       <div className="space-y-2 sm:space-y-1">
         {/* Added dark:text-white */}
         <h1 className="text-3xl md:text-4xl font-black text-[#1A1D21] dark:text-white tracking-tight">
-          {getGreeting()}
+          {getGreeting()} {userData.name || "N/A"}
           <span className="text-[#FF5C00]">.</span>
         </h1>
 
@@ -60,14 +62,14 @@ const Greetings = () => {
       <div className="w-full sm:w-auto bg-[#F8F9FD] dark:bg-white/5 border border-slate-100 dark:border-white/5 px-6 py-4 rounded-[2.5rem] shadow-sm transition-colors duration-300">
         <div className="flex items-baseline justify-between sm:justify-start gap-2">
           {/* Added dark:text-white */}
-          <h2 className="text-3xl font-bold text-[#1A1D21] dark:text-white tabular-nums tracking-tighter">
+          <h2 className="text-4xl font-bold text-[#1A1D21] dark:text-white tabular-nums tracking-wider">
             {formatTime(dateTime).split(" ")[0]}
           </h2>
-          <span className="text-xs font-black text-[#FF5C00] uppercase italic tracking-widest">
+          <span className="text-3xl font-black text-[#FF5C00] uppercase italic tracking-wider">
             {formatTime(dateTime).split(" ")[1]}
           </span>
         </div>
-        <p className="text-slate-400 dark:text-slate-500 text-[9px] font-bold uppercase tracking-[0.2em] text-right mt-0.5">
+        <p className="text-slate-400 dark:text-slate-500 text-[13px] font-bold uppercase tracking-[0.2em] text-right mt-0.5">
           {formatDate(dateTime)}
         </p>
       </div>

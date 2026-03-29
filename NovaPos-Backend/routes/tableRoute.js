@@ -1,3 +1,4 @@
+// routes/tableRoute.js
 const express = require("express");
 const {
   addTable,
@@ -8,8 +9,11 @@ const { isVerifiedUser } = require("../middlewares/tokenVerification");
 
 const router = express.Router();
 
-router.route("/").post(isVerifiedUser, addTable).get(isVerifiedUser, getTables);
+// ✅ Change this to include "/add"
+router.post("/add", isVerifiedUser, addTable);
 
-router.route("/:id").put(isVerifiedUser, updateTable);
+// Keep the others as they are
+router.get("/", isVerifiedUser, getTables);
+router.put("/:id", isVerifiedUser, updateTable);
 
 module.exports = router;

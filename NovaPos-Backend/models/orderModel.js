@@ -30,4 +30,5 @@ const orderSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-module.exports = mongoose.model("order", orderSchema);
+// ✅ Capital "O" — must match ref: "Order" in tableModel.js
+module.exports = mongoose.model("Order", orderSchema);

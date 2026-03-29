@@ -94,5 +94,21 @@ const getUserData = async (req, res, next) => {
     next(error);
   }
 };
+const logout = async (req, res, next) => {
+  try {
+    res.clearCookie("accessToken", {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    });
 
-module.exports = { register, login, getUserData };
+    res.status(200).json({
+      success: true,
+      message: "User Logout Successfully!",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { register, login, getUserData, logout };

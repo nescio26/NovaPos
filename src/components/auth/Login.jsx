@@ -1,51 +1,74 @@
 import React, { useState } from "react";
-import { Mail, Lock } from "lucide-react";
+import { Mail, Lock, Loader2 } from "lucide-react";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "../../https/index";
+import { enqueueSnackbar } from "notistack";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../redux/slices/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = ({ darkMode }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const loginMutation = useMutation({
+    mutationFn: (reqData) => login(reqData),
+    onSuccess: (res) => {
+      const { data } = res.data;
+      const { _id, name, email, phone, role } = data;
+      dispatch(setUser({ _id, name, email, phone, role }));
+      enqueueSnackbar(`Welcome back, ${name}!`, { variant: "success" });
+      navigate("/");
+    },
+    onError: (error) => {
+      enqueueSnackbar(error.response?.data?.message || "Login failed", {
+        variant: "error",
+      });
+    },
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Login Attempt:", formData);
+    loginMutation.mutate(formData);
   };
 
-  const inputContainerStyle = `flex items-center rounded-2xl p-4 px-5 transition-all shadow-inner border ${
+  const inputContainerStyle = `flex items-center rounded-2xl p-4 px-5 transition-all border ${
     darkMode
-      ? "bg-[#1f1f1f] border-white/10 group-focus-within:border-[#FF5C00]/50"
-      : "bg-white border-slate-200 group-focus-within:border-[#FF5C00]"
+      ? "bg-[#1f1f1f] border-white/10 group-focus-within:border-[#FF5C00]/50 shadow-inner"
+      : "bg-white border-slate-200 group-focus-within:border-[#FF5C00] shadow-sm"
   }`;
 
-  const labelStyle = `block mb-2 text-[10px] font-black uppercase tracking-[0.2em] transition-colors ${
+  const labelStyle = `block mb-2 text-xs font-black uppercase tracking-[0.15em] transition-colors ${
     darkMode
-      ? "text-[#ababab] group-focus-within:text-[#FF5C00]"
+      ? "text-slate-400 group-focus-within:text-[#FF5C00]"
       : "text-slate-500 group-focus-within:text-[#FF5C00]"
   }`;
 
   return (
     <div className="w-full">
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="space-y-5" onSubmit={handleSubmit}>
         {/* Email Input */}
         <div className="group">
           <label className={labelStyle}>Employee Email</label>
           <div className={inputContainerStyle}>
             <Mail
-              className={`w-4 h-4 mr-3 transition-colors ${darkMode ? "text-slate-500" : "text-slate-400"} group-focus-within:text-[#FF5C00]`}
+              className={`w-5 h-5 mr-3 transition-colors ${darkMode ? "text-slate-500" : "text-slate-400"} group-focus-within:text-[#FF5C00]`}
             />
             <input
               type="email"
               name="email"
               value={formData.email}
-              onChange={handleChange}
               autoComplete="email"
-              placeholder="Enter Employee Email"
-              className={`bg-transparent flex-1 text-sm focus:outline-none font-medium ${darkMode ? "text-white" : "text-slate-900"}`}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
+              placeholder="Enter Email"
+              className={`bg-transparent flex-1 text-base focus:outline-none font-bold ${darkMode ? "text-white" : "text-slate-900"}`}
               required
             />
           </div>
@@ -56,16 +79,18 @@ const Login = ({ darkMode }) => {
           <label className={labelStyle}>Password</label>
           <div className={inputContainerStyle}>
             <Lock
-              className={`w-4 h-4 mr-3 transition-colors ${darkMode ? "text-slate-500" : "text-slate-400"} group-focus-within:text-[#FF5C00]`}
+              className={`w-5 h-5 mr-3 transition-colors ${darkMode ? "text-slate-500" : "text-slate-400"} group-focus-within:text-[#FF5C00]`}
             />
             <input
               type="password"
               name="password"
               value={formData.password}
-              onChange={handleChange}
+              autoComplete="new-password"
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
               placeholder="Enter Password"
-              autoComplete="current-password"
-              className={`bg-transparent flex-1 text-sm focus:outline-none font-medium tracking-widest ${darkMode ? "text-white" : "text-slate-900"}`}
+              className={`bg-transparent flex-1 text-base focus:outline-none font-bold tracking-widest ${darkMode ? "text-white" : "text-slate-900"}`}
               required
             />
           </div>
@@ -73,9 +98,17 @@ const Login = ({ darkMode }) => {
 
         <button
           type="submit"
-          className="w-full bg-[#FF5C00] hover:bg-[#e65300] text-white py-4.5 rounded-[1.5rem] text-[11px] font-black uppercase tracking-[0.3em] transition-all shadow-xl shadow-orange-500/20 active:scale-95 mt-6"
+          disabled={loginMutation.isPending}
+          className="w-full bg-[#FF5C00] hover:bg-[#e65300] disabled:opacity-70 text-white py-5 rounded-[1.5rem] text-sm font-black uppercase tracking-[0.2em] transition-all shadow-xl shadow-orange-500/20 active:scale-[0.98] mt-4 flex items-center justify-center gap-2"
         >
-          Log In
+          {loginMutation.isPending ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Verifying...
+            </>
+          ) : (
+            "Log In to Terminal"
+          )}
         </button>
       </form>
     </div>

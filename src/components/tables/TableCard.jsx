@@ -11,8 +11,8 @@ const TableCard = ({ name, status, initials, seats }) => {
 
   const isBooked = status?.toLowerCase() === "booked";
 
-  // Memoize the background to prevent "flickering" colors on re-renders
-  const bgColor = React.useMemo(() => getRandomBg(), []);
+  // ✅ Derive bg color from name so it stays consistent across remounts
+  const bgColor = React.useMemo(() => getRandomBg(name), [name]);
 
   const handleClick = (tableName) => {
     if (isBooked) return;
@@ -35,7 +35,6 @@ const TableCard = ({ name, status, initials, seats }) => {
           <h1 className="text-[#1A1D21] dark:text-white text-lg font-black tracking-tighter uppercase italic leading-none group-hover:text-[#FF5C00] transition-colors">
             {name}
           </h1>
-
           <div className="flex items-center gap-2 mt-2">
             <FaUsers
               size={12}
@@ -65,16 +64,28 @@ const TableCard = ({ name, status, initials, seats }) => {
       {/* CENTER: Visual Identifier (Avatar) */}
       <div className="flex items-center justify-center py-4">
         <div
-          className={`w-20 h-20 rounded-[2rem] flex items-center justify-center text-white text-2xl font-black shadow-lg transition-all duration-700 group-hover:scale-110 group-hover:rotate-6 border-4 border-white dark:border-[#1c2025] ${
+          className={`w-20 h-20 rounded-[2rem] flex flex-col items-center justify-center text-white font-black shadow-lg transition-all duration-700 group-hover:scale-110 group-hover:rotate-6 border-4 border-white dark:border-[#1c2025] ${
             isBooked ? "bg-slate-200 dark:bg-white/10" : bgColor
           }`}
         >
           {isBooked ? (
-            <span className="text-slate-400 dark:text-slate-500 text-xs">
-              OCC
-            </span>
+            <>
+              <span
+                className={`text-2xl ${initials ? "text-white" : "text-slate-400 dark:text-slate-500"}`}
+              >
+                {initials ? initials.charAt(0).toUpperCase() : "OCC"}
+              </span>
+              {initials && (
+                // ✅ Removed duplicate text-center
+                <span className="text-[8px] font-black uppercase tracking-wider text-white/60 mt-0.5 px-1 text-center leading-tight truncate w-full">
+                  {initials.split(" ")[0]}
+                </span>
+              )}
+            </>
           ) : (
-            initials
+            <span className="text-lg font-black uppercase tracking-tight text-center px-1 leading-tight">
+              {name}
+            </span>
           )}
         </div>
       </div>
@@ -82,13 +93,13 @@ const TableCard = ({ name, status, initials, seats }) => {
       {/* FOOTER: Interaction Indicator */}
       <div className="flex flex-col items-center gap-2">
         <p
-          className={`text-[9px] font-black uppercase tracking-[0.2em] transition-colors ${
+          className={`text-[9px] font-black uppercase tracking-[0.2em] transition-colors text-center truncate w-full ${
             isBooked
               ? "text-slate-300 dark:text-slate-600"
               : "text-emerald-500 dark:text-emerald-400 group-hover:text-[#FF5C00]"
           }`}
         >
-          {isBooked ? "In Service" : "Available Now"}
+          {isBooked ? (initials ? initials : "In Service") : "Available Now"}
         </p>
 
         <div
