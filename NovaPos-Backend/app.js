@@ -4,6 +4,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./config/database");
 const globalErrorHandler = require("./middlewares/globalErrorHandler");
+
 const cors = require("cors");
 
 const app = express();
@@ -33,6 +34,8 @@ app.use("/api/user", require("./routes/userRoute"));
 app.use("/api/order", require("./routes/orderRoute"));
 app.use("/api/table", require("./routes/tableRoute"));
 app.use("/api/payment", require("./routes/paymentRoute"));
+app.use("/api/category", require("./routes/categoryRoutes"));
+app.use("/api/dish", require("./routes/dishRoutes"));
 
 // Global Error Handler
 app.use(globalErrorHandler);

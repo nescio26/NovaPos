@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { BiSolidDish, BiPlus } from "react-icons/bi";
-import { MdCategory, MdTableBar } from "react-icons/md";
+import { MdCategory, MdTableBar, MdPayment, MdPeople } from "react-icons/md";
 
 // Component Imports
 import Metrics from "../components/dashboard/Metrics";
 import RecentOrders from "../components/dashboard/RecentOrders";
-import Modal from "../components/dashboard/Modal"; // Import your new Modal
+import PaymentDetails from "../components/dashboard/PaymentDetails";
+import StaffDetails from "../components/dashboard/StaffDetails";
+import Modal from "../components/dashboard/Modal";
 
 const buttons = [
   { label: "Add Table", icon: <MdTableBar />, action: "table" },
@@ -13,11 +15,31 @@ const buttons = [
   { label: "Add Dishes", icon: <BiSolidDish />, action: "dishes" },
 ];
 
-const tabs = ["Metrics", "Orders", "Payments", "Staff"];
+const tabs = [
+  { id: "Metrics", label: "Metrics", icon: <BiSolidDish /> },
+  { id: "Orders", label: "Orders", icon: <MdTableBar /> },
+  { id: "Payments", label: "Payments", icon: <MdPayment /> },
+  { id: "Staff", label: "Staff", icon: <MdPeople /> },
+];
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("Metrics");
   const [modalType, setModalType] = useState(null);
+
+  const renderContent = () => {
+    switch (activeTab) {
+      case "Metrics":
+        return <Metrics />;
+      case "Orders":
+        return <RecentOrders />;
+      case "Payments":
+        return <PaymentDetails />;
+      case "Staff":
+        return <StaffDetails />;
+      default:
+        return <Metrics />;
+    }
+  };
 
   return (
     <div className="min-h-[calc(100vh-5rem)] bg-[#F8F9FD] dark:bg-[#0B0E11] transition-colors duration-300 pb-20">
@@ -42,29 +64,26 @@ const Dashboard = () => {
           <div className="flex items-center p-1.5 bg-slate-200/50 dark:bg-white/5 rounded-[1.8rem] border border-slate-100 dark:border-white/5 overflow-x-auto no-scrollbar">
             {tabs.map((tab) => (
               <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`flex-1 lg:flex-none py-3 px-6 rounded-[1.3rem] text-[11px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
-                  activeTab === tab
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center gap-2 flex-1 lg:flex-none py-3 px-6 rounded-[1.3rem] text-[11px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
+                  activeTab === tab.id
                     ? "bg-[#FF5C00] text-white shadow-lg shadow-orange-500/20"
-                    : "text-slate-400"
+                    : "text-slate-400 hover:text-[#FF5C00]"
                 }`}
               >
-                {tab}
+                <span className="text-sm">{tab.icon}</span>
+                {tab.label}
               </button>
             ))}
           </div>
         </div>
 
         {/* CONTENT AREA */}
-        <div className="mt-10 lg:mt-14">
-          {activeTab === "Metrics" && <Metrics />}
-          {activeTab === "Orders" && <RecentOrders />}
-          {/* ... Other tabs ... */}
-        </div>
+        <div className="mt-10 lg:mt-14">{renderContent()}</div>
       </div>
 
-      {/* SINGLE MODAL CALL */}
+      {/* MODAL */}
       <Modal
         isOpen={!!modalType}
         onClose={() => setModalType(null)}

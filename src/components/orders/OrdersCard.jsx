@@ -1,94 +1,144 @@
-import React from "react";
-import { FaCheckDouble, FaCircle, FaClock } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import {
+  FaCheckDouble,
+  FaCircle,
+  FaClock,
+  FaReceipt,
+  FaUser,
+} from "react-icons/fa";
+import OrderDetailsModal from "./OrderDetailsModal";
 
-const OrdersCard = () => {
-  const name = "Syahmi";
-  const items = 8;
-  const status = "Ready";
-  const time = "8:30 PM";
-  const date = "18 Jan 2026";
-  const total = 250.0;
+const OrdersCard = ({ order }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [timeAgo, setTimeAgo] = useState("");
 
-  const isReady = status.toLowerCase() === "ready";
+  const customerName = order.customerDetails?.name || "Guest";
+  const itemsCount = order.items?.length || 0;
+  const status = order.orderStatus || "Pending";
+  const createdAt = order.createdAt || order.orderDate;
+  const total = order.bills?.totalWithTax || 0;
+  const tableNo = order.table?.tableNo || "N/A";
+
+  useEffect(() => {
+    const updateTime = () => {
+      if (!createdAt) return;
+      const start = new Date(createdAt);
+      const now = new Date();
+      const diffInMins = Math.floor((now - start) / 60000);
+      if (diffInMins < 1) setTimeAgo("Just now");
+      else if (diffInMins < 60) setTimeAgo(`${diffInMins}m ago`);
+      else setTimeAgo(`${Math.floor(diffInMins / 60)}h ago`);
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 30000);
+    return () => clearInterval(interval);
+  }, [createdAt]);
+
+  const getStatusConfig = (status) => {
+    const s = status?.toLowerCase();
+    if (s === "paid" || s === "completed" || s === "served") {
+      return {
+        color: "text-emerald-500",
+        bg: "bg-emerald-500/10",
+        label: "Served",
+      };
+    }
+    if (s === "ready") {
+      return { color: "text-blue-500", bg: "bg-blue-500/10", label: "Ready" };
+    }
+    return {
+      color: "text-orange-500",
+      bg: "bg-orange-500/10",
+      label: "Preparing",
+    };
+  };
+
+  const config = getStatusConfig(status);
 
   return (
-    <div className="group flex flex-col gap-6 bg-white dark:bg-[#16191D] hover:bg-[#FDFDFD] dark:hover:bg-[#1c2025] border border-slate-100 dark:border-white/5 p-6 rounded-[2.5rem] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-slate-200/50 dark:hover:shadow-black/40 w-full active-press">
-      {/* TOP SECTION: IDENTIFIER & STATUS */}
-      <div className="flex items-center justify-between">
-        <div
-          className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg transition-transform duration-500 group-hover:rotate-3 ${
-            isReady
-              ? "bg-[#FF5C00] shadow-orange-500/20"
-              : "bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/5"
-          }`}
-        >
-          <span
-            className={`font-black text-lg uppercase tracking-tighter ${isReady ? "text-white" : "text-slate-400 dark:text-slate-500"}`}
-          >
-            {name.substring(0, 2)}
-          </span>
+    <>
+      <div
+        onClick={() => setIsModalOpen(true)}
+        className="group relative flex flex-col bg-white dark:bg-[#16191D] border border-slate-100 dark:border-white/5 p-5 rounded-[2rem] transition-all duration-300 hover:border-[#FF5C00]/30 hover:shadow-2xl hover:shadow-orange-500/5 cursor-pointer active-press"
+      >
+        {/* HEADER: Balanced Table & Name */}
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <div className="flex flex-col">
+              <span className="text-[8px] font-black uppercase tracking-widest text-slate-400">
+                Table
+              </span>
+              <span className="text-xl font-black italic text-[#1A1D21] dark:text-white leading-none">
+                #{tableNo}
+              </span>
+            </div>
+            <div className="h-6 w-[1px] bg-slate-100 dark:bg-white/10" />
+            <div className="flex flex-col">
+              <span className="text-[8px] font-black uppercase tracking-widest text-slate-400">
+                Customer
+              </span>
+              <span className="text-lg font-bold text-[#1A1D21] dark:text-white leading-none truncate max-w-[120px]">
+                {customerName}
+              </span>
+            </div>
+          </div>
+
+          {/* Status Indicator Dot */}
+          <div className={`${config.bg} p-2 rounded-full`}>
+            <div
+              className={`w-2 h-2 rounded-full ${config.color.replace("text", "bg")} ${status === "Preparing" ? "animate-pulse" : ""}`}
+            />
+          </div>
         </div>
 
-        <div
-          className={`flex items-center gap-2 px-4 py-1.5 rounded-xl border transition-all ${
-            isReady
-              ? "bg-emerald-50 dark:bg-emerald-500/10 border-emerald-100 dark:border-emerald-500/20 text-emerald-600 dark:text-emerald-400"
-              : "bg-amber-50 dark:bg-amber-500/10 border-amber-100 dark:border-amber-500/20 text-amber-600 dark:text-amber-400"
-          }`}
-        >
-          <span className="text-[10px] font-black uppercase tracking-[0.2em]">
-            {status}
-          </span>
-          {isReady ? (
-            <FaCheckDouble size={10} />
-          ) : (
-            <FaCircle size={6} className="animate-pulse" />
-          )}
-        </div>
-      </div>
-
-      {/* MIDDLE SECTION: PRIMARY DATA */}
-      <div className="space-y-4">
-        <div>
-          <h1 className="text-[#1A1D21] dark:text-white text-2xl font-black tracking-tighter leading-none group-hover:text-[#FF5C00] transition-colors">
-            {name}
-          </h1>
-          <div className="flex items-center gap-3 mt-3">
-            <span className="text-[#FF5C00] text-[9px] font-black uppercase tracking-widest bg-orange-50 dark:bg-orange-500/10 px-2.5 py-1 rounded-lg border border-orange-100 dark:border-orange-500/20">
-              #101 / Dine In
+        {/* MIDDLE: Modern Info Pills */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5">
+            <FaClock size={10} className="text-slate-400" />
+            <span className="text-[10px] font-black text-slate-600 dark:text-slate-300 uppercase tracking-tighter">
+              {timeAgo}
             </span>
-            <span className="flex items-center gap-1.5 text-slate-400 dark:text-slate-500 text-[10px] font-bold uppercase tracking-widest">
-              <FaClock
-                size={10}
-                className="text-slate-300 dark:text-slate-600"
-              />{" "}
-              {time}
+          </div>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/5">
+            <FaReceipt size={10} className="text-slate-400" />
+            <span className="text-[10px] font-black text-slate-600 dark:text-slate-300 uppercase tracking-tighter">
+              {itemsCount} Items
             </span>
           </div>
         </div>
 
-        {/* METADATA BAR */}
-        <div className="flex justify-between items-center border-t border-slate-50 dark:border-white/5 pt-4">
-          <p className="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-[0.15em]">
-            {date}
-          </p>
-          <p className="text-[#FF5C00] text-[10px] font-black uppercase tracking-[0.15em]">
-            {items} ITEMS
-          </p>
+        {/* FOOTER: Price & Status Label */}
+        <div className="mt-auto flex items-end justify-between">
+          <div className="flex flex-col">
+            <span
+              className={`text-[9px] font-black uppercase tracking-[0.2em] ${config.color}`}
+            >
+              {config.label}
+            </span>
+            <div className="flex items-baseline gap-1 mt-1">
+              <span className="text-[#FF5C00] text-[10px] font-bold">RM</span>
+              <span className="text-2xl font-black tracking-tighter text-[#1A1D21] dark:text-white">
+                {total.toFixed(2)}
+              </span>
+            </div>
+          </div>
+
+          {/* Interaction Icon */}
+          <div className="w-8 h-8 rounded-full bg-slate-50 dark:bg-white/5 flex items-center justify-center group-hover:bg-[#FF5C00] transition-colors duration-300">
+            <FaCheckDouble
+              size={12}
+              className="text-slate-300 group-hover:text-white transition-colors"
+            />
+          </div>
         </div>
       </div>
 
-      {/* BOTTOM SECTION: PRICING */}
-      <div className="flex items-center justify-between bg-[#F8F9FD] dark:bg-white/5 p-5 rounded-[1.8rem] mt-1 border border-slate-50 dark:border-white/5 shadow-inner">
-        <h2 className="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-[0.2em]">
-          Total
-        </h2>
-        <p className="text-[#1A1D21] dark:text-white text-2xl font-black tracking-tighter">
-          <span className="text-[#FF5C00] text-sm mr-1.5 font-bold">RM</span>
-          {total.toFixed(2)}
-        </p>
-      </div>
-    </div>
+      <OrderDetailsModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        order={order}
+      />
+    </>
   );
 };
 

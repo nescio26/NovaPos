@@ -1,13 +1,17 @@
 import { enqueueSnackbar } from "notistack";
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { createStripeOrder, createDirectOrder } from "../../https";
+import { useNavigate } from "react-router-dom";
+import { createStripeOrder } from "../../https";
 import { clearCart } from "../../redux/slices/cartSlice";
+import { removeCustomer } from "../../redux/slices/customerSlice";
 
 const Bill = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const customerData = useSelector((state) => state.customer);
   const cartData = useSelector((state) => state.cart);
+  const [isLoading, setIsLoading] = useState(false);
 
   const totalQuantity = cartData.reduce((acc, item) => acc + item.quantity, 0);
   const subtotal = cartData.reduce(
@@ -19,16 +23,14 @@ const Bill = () => {
   const taxAmount = (subtotal * taxRate) / 100;
   const finalTotal = subtotal + taxAmount;
 
-  const [paymentMethod, setPaymentMethod] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-
   const buildOrderPayload = () => ({
     customerDetails: {
       name: customerData.customerName,
       phone: customerData.customerPhone,
       guests: customerData.guests,
+      email: customerData.customerEmail || "",
     },
-    tableId: customerData.tableNo,
+    tableId: customerData.table?.tableNo,
     items: cartData.map((item) => ({
       name: item.name,
       pricePerQuantity: item.pricePerQuantity,
@@ -42,12 +44,12 @@ const Bill = () => {
   });
 
   const handlePlaceOrder = async () => {
-    if (!paymentMethod) {
-      enqueueSnackbar("Please Select A Payment Method", { variant: "warning" });
-      return;
-    }
     if (cartData.length === 0) {
       enqueueSnackbar("Your cart is empty", { variant: "warning" });
+      return;
+    }
+    if (!customerData.table) {
+      enqueueSnackbar("Please select a table first", { variant: "warning" });
       return;
     }
 
@@ -55,54 +57,61 @@ const Bill = () => {
     try {
       const payload = buildOrderPayload();
 
-      if (paymentMethod === "Card") {
-        // Stripe hosted checkout — redirect
-        const { data } = await createStripeOrder(payload);
-        window.location.href = data.url;
-      } else {
-        // Cash or QR — save directly, no gateway
-        const { data } = await createDirectOrder({
-          ...payload,
-          paymentMethod,
-        });
-        enqueueSnackbar(`Order placed! Payment: ${paymentMethod}`, {
+      // Only creates order, no payment processing
+      const { data } = await createStripeOrder(payload);
+
+      enqueueSnackbar(
+        "Order placed successfully! Please proceed to cashier for payment.",
+        {
           variant: "success",
-        });
-        dispatch(clearCart());
-        handlePrintReceipt(data.data);
-      }
+        },
+      );
+
+      // Clear cart and customer data
+      dispatch(clearCart());
+      dispatch(removeCustomer());
+
+      // Redirect to tables after 2 seconds
+      setTimeout(() => {
+        navigate("/tables");
+      }, 2000);
     } catch (error) {
       console.log(error);
-      enqueueSnackbar("Failed to place order. Please try again.", {
-        variant: "error",
-      });
+      enqueueSnackbar(
+        error.response?.data?.message ||
+          "Failed to place order. Please try again.",
+        {
+          variant: "error",
+        },
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handlePrintReceipt = (order) => {
+  const handlePrintReceipt = () => {
     const receiptWindow = window.open("", "_blank", "width=400,height=600");
     receiptWindow.document.write(`
       <html>
         <head>
-          <title>Receipt</title>
+          <title>Order Confirmation - NovaPos</title>
           <style>
             body { font-family: monospace; padding: 20px; font-size: 13px; }
-            h2 { text-align: center; margin-bottom: 4px; }
+            h2 { text-align: center; color: #FF5C00; margin-bottom: 4px; }
             p { margin: 2px 0; }
             .divider { border-top: 1px dashed #000; margin: 10px 0; }
             .row { display: flex; justify-content: space-between; }
-            .total { font-weight: bold; font-size: 15px; }
+            .total { font-weight: bold; font-size: 15px; color: #FF5C00; }
             .center { text-align: center; }
           </style>
         </head>
         <body>
           <h2>NovaPos</h2>
-          <p class="center">Official Receipt</p>
+          <p class="center">Order Confirmation</p>
           <div class="divider"></div>
           <p>Customer: ${customerData.customerName || "Walk-In"}</p>
-          <p>Phone: ${customerData.phone || "-"}</p>
+          <p>Phone: ${customerData.customerPhone || "-"}</p>
+          <p>Table: ${customerData.table?.tableNo || "-"}</p>
           <p>Date: ${new Date().toLocaleString("en-MY")}</p>
           <div class="divider"></div>
           ${cartData
@@ -120,6 +129,7 @@ const Bill = () => {
           <div class="divider"></div>
           <div class="row total"><span>TOTAL</span><span>RM ${finalTotal.toFixed(2)}</span></div>
           <div class="divider"></div>
+          <p class="center">Please proceed to cashier for payment</p>
           <p class="center">Thank you for dining with us!</p>
           <script>window.onload = () => { window.print(); window.close(); }</script>
         </body>
@@ -163,28 +173,6 @@ const Bill = () => {
         </h1>
       </div>
 
-      {/* PAYMENT METHODS */}
-      <div className="px-6 md:px-8 mt-5 md:mt-6">
-        <p className="text-[9px] text-slate-400 dark:text-slate-500 font-black uppercase tracking-[0.2em] mb-3 text-center">
-          Payment Method
-        </p>
-        <div className="flex items-center gap-1.5 p-1 bg-[#F8F9FD] dark:bg-white/5 rounded-2xl border border-slate-100 dark:border-white/5">
-          {["Cash", "QR", "Card"].map((method) => (
-            <button
-              key={method}
-              onClick={() => setPaymentMethod(method)}
-              className={`flex-1 py-2.5 md:py-3 rounded-xl text-[9px] md:text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 ${
-                paymentMethod === method
-                  ? "bg-white dark:bg-[#FF5C00] text-[#FF5C00] dark:text-white shadow-sm dark:shadow-orange-500/20"
-                  : "text-slate-400 dark:text-slate-600 hover:text-[#1A1D21] dark:hover:text-slate-300"
-              }`}
-            >
-              {method}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* ACTION BUTTONS */}
       <div className="flex flex-col sm:grid sm:grid-cols-2 gap-3 px-6 md:px-8 mt-6 md:mt-8 pb-8 md:pb-10">
         <button
@@ -195,7 +183,7 @@ const Bill = () => {
           {isLoading ? "Processing..." : "Place Order"}
         </button>
         <button
-          onClick={() => handlePrintReceipt()}
+          onClick={handlePrintReceipt}
           disabled={cartData.length === 0}
           className="bg-emerald-200 dark:bg-emerald-500/20 border disabled:grayscale border-emerald-200 dark:border-emerald-500 hover:bg-emerald-200 dark:hover:bg-emerald-500/30 py-4 md:py-4.5 rounded-[1.2rem] md:rounded-[1.5rem] text-emerald-700 dark:text-emerald-400 text-[10px] md:text-[11px] font-black uppercase tracking-[0.2em] transition-all active:scale-95 order-2"
         >

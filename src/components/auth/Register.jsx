@@ -128,8 +128,8 @@ const Register = ({ darkMode, setIsRegister }) => {
         {/* Role Selection */}
         <div className="pt-2">
           <label className={labelStyle}>Assign Role</label>
-          <div className="grid grid-cols-3 gap-3">
-            {["Waiter", "Cashier", "Admin"].map((r) => (
+          <div className="grid grid-cols-4 gap-3">
+            {["Waiter", "Cashier", "Admin", "Kitchen Staff"].map((r) => (
               <button
                 key={r}
                 type="button"

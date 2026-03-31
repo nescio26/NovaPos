@@ -26,7 +26,7 @@ const Menu = () => {
           <div className="flex items-center justify-between px-6 py-5 md:px-8 md:py-6 border-b border-slate-50 dark:border-white/5">
             <div className="flex items-center gap-4">
               <BackButton />
-              <h1 className="text-[#1A1D21] dark:text-white text-xl md:text-2xl font-black uppercase tracking-tighter italic">
+              <h1 className="text-3xl font-black uppercase italic tracking-tighter leading-none dark:text-white">
                 Menu<span className="text-[#FF5C00]">.</span>
               </h1>
             </div>
@@ -51,7 +51,7 @@ const Menu = () => {
                   {customerData.customerName || "Walk-In"}
                 </h1>
                 <p className="text-[13px] text-[#FF5C00] font-black">
-                  {customerData.tableNo || "T-01"}
+                  Table : {customerData.table?.tableNo || "Not Selected"}
                 </p>
               </div>
             </div>

@@ -61,14 +61,12 @@ const login = async (req, res, next) => {
       return next(createHttpError(401, "Invalid Credentials"));
     }
 
-    // ✅ FIXED HERE
     const accessToken = jwt.sign(
       { _id: isUserPresent._id },
       process.env.JWT_SECRET,
-      { expiresIn: "1d" }, // fixed
+      { expiresIn: "1d" },
     );
 
-    // ✅ FIXED HERE
     res.cookie("accessToken", accessToken, {
       maxAge: 1000 * 60 * 60 * 24 * 30,
       httpOnly: true,
@@ -88,12 +86,13 @@ const login = async (req, res, next) => {
 
 const getUserData = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user._id).select("-password");
     res.status(200).json({ success: true, data: user });
   } catch (error) {
     next(error);
   }
 };
+
 const logout = async (req, res, next) => {
   try {
     res.clearCookie("accessToken", {
@@ -111,4 +110,79 @@ const logout = async (req, res, next) => {
   }
 };
 
-module.exports = { register, login, getUserData, logout };
+const getAllUsers = async (req, res, next) => {
+  try {
+    const users = await User.find().select("-password").sort({ createdAt: -1 });
+    res.status(200).json({
+      success: true,
+      data: users,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const updateUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, email, phone, role, password } = req.body;
+
+    // Check if user exists
+    const user = await User.findById(id);
+    if (!user) {
+      return next(createHttpError(404, "User not found!"));
+    }
+
+    // Prepare update data
+    const updateData = { name, email, phone, role };
+
+    // If password is provided, hash it
+    if (password && password.trim() !== "") {
+      const salt = await bcrypt.genSalt(10);
+      updateData.password = await bcrypt.hash(password, salt);
+    }
+
+    // Update user
+    const updatedUser = await User.findByIdAndUpdate(id, updateData, {
+      new: true,
+      runValidators: true,
+    }).select("-password");
+
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully!",
+      data: updatedUser,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const user = await User.findByIdAndDelete(id);
+
+    if (!user) {
+      return next(createHttpError(404, "User not found!"));
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully!",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = {
+  register,
+  login,
+  getUserData,
+  logout,
+  getAllUsers,
+  updateUser,
+  deleteUser,
+};

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { BiSolidDish } from "react-icons/bi";
-import { CiCircleMore } from "react-icons/ci";
-import { FaHome } from "react-icons/fa";
+import { FaHome, FaCashRegister } from "react-icons/fa";
 import { MdOutlineReorder, MdTableBar } from "react-icons/md";
 import Modal from "./Modal";
 import { useDispatch } from "react-redux";
@@ -49,6 +48,7 @@ const BottomNav = () => {
                 onChange={(e) => setName(e.target.value)}
                 type="text"
                 placeholder="Customer Name"
+                required
                 className="bg-[#F8F9FD] dark:bg-white/5 border border-slate-100 dark:border-white/5 rounded-2xl p-4 text-sm text-[#1A1D21] dark:text-white font-bold focus:border-orange-500/50 focus:outline-none transition-all placeholder:text-slate-500"
               />
             </div>
@@ -63,6 +63,7 @@ const BottomNav = () => {
                 onChange={(e) => setPhone(e.target.value)}
                 type="tel"
                 placeholder="Phone Number"
+                required
                 className="bg-[#F8F9FD] dark:bg-white/5 border border-slate-100 dark:border-white/5 rounded-2xl p-4 text-sm text-[#1A1D21] dark:text-white font-bold focus:border-orange-500/50 focus:outline-none transition-all placeholder:text-slate-500"
               />
             </div>
@@ -133,10 +134,10 @@ const BottomNav = () => {
           active={isActive("/tables")}
         />
         <NavButton
-          icon={<CiCircleMore size={22} />}
-          label="More"
-          onClick={() => navigate("/more")}
-          active={isActive("/more")}
+          icon={<FaCashRegister size={22} />}
+          label="Cashier"
+          onClick={() => navigate("/cashier")}
+          active={isActive("/cashier")}
         />
       </div>
     </>

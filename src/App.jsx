@@ -8,15 +8,16 @@ import {
 import { Home, Auth, Orders, Menu, Dashboard } from "./pages";
 import Header from "./components/shared/Header";
 import Tables from "./pages/Tables";
+import CashierDashboard from "./pages/CashierDashboard";
 import { useSelector } from "react-redux";
 import useLoadData from "./hooks/useLoadData";
 import FullScreenLoader from "./components/shared/FullScreenLoader";
-import PaymentSuccess from "./pages/paymentSuccess";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 function Layout() {
   const location = useLocation();
   const isLoading = useLoadData();
-  const hideHeaderRoutes = ["/auth"];
+  const hideHeaderRoutes = ["/auth", "/payment-success"];
   const { isAuth } = useSelector((state) => state.user);
 
   if (isLoading) return <FullScreenLoader />;
@@ -69,8 +70,16 @@ function Layout() {
             </ProtectedRoute>
           }
         />
-        <Route path="*" element={<div>Not Found</div>} />
+        <Route
+          path="/cashier"
+          element={
+            <ProtectedRoute>
+              <CashierDashboard />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/payment-success" element={<PaymentSuccess />} />
+        <Route path="*" element={<div>Not Found</div>} />
       </Routes>
     </>
   );
