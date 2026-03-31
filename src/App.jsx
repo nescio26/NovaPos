@@ -78,7 +78,6 @@ function Layout() {
             </ProtectedRoute>
           }
         />
-        <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route path="*" element={<div>Not Found</div>} />
       </Routes>
     </>
