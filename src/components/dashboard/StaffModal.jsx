@@ -36,7 +36,6 @@ const StaffModal = ({ mode, user, isLoading, onSubmit, onClose }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Validation logic...
     const payload = { ...form };
     if (isEdit && !payload.password) delete payload.password;
     onSubmit(payload);

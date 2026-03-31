@@ -46,7 +46,6 @@ const StaffDetails = () => {
     },
   });
 
-  // FIX: update mutation wired up and connected to modal onSubmit
   const updateMutation = useMutation({
     mutationFn: updateUser, // signature: ({ userId, ...data })
     onSuccess: () => {
@@ -62,7 +61,6 @@ const StaffDetails = () => {
     },
   });
 
-  // FIX: add mutation — wire a createUser API call here when backend is ready
   const addMutation = useMutation({
     mutationFn: (data) =>
       fetch(`${import.meta.env.VITE_API_BACKEND_URL}/api/user/register`, {
@@ -86,7 +84,7 @@ const StaffDetails = () => {
     },
   });
 
-  // ── Filtered list ────────────────────────────────────────────────────────
+  //  Filtered list
 
   const filteredUsers = useMemo(() => {
     return users.filter((user) => {
@@ -107,14 +105,12 @@ const StaffDetails = () => {
 
   const handleEdit = (user) => setModal({ mode: "edit", user });
 
-  // FIX: delete now confirms before firing, and is guarded with isPending
   const handleDelete = (userId, userName) => {
     if (window.confirm(`Delete ${userName}? This cannot be undone.`)) {
       deleteMutation.mutate(userId);
     }
   };
 
-  // FIX: modal submit routes to add or update depending on mode
   const handleModalSubmit = (formData) => {
     if (modal.mode === "edit") {
       updateMutation.mutate({ userId: modal.user._id, ...formData });
@@ -144,7 +140,6 @@ const StaffDetails = () => {
             </p>
           </div>
 
-          {/* FIX: was onClick={()=> ()} — now calls handleAdd */}
           <button
             onClick={handleAdd}
             className="flex items-center gap-3 bg-[#1A1D21] dark:bg-white text-white dark:text-[#1A1D21] px-8 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest hover:bg-[#FF5C00] dark:hover:bg-[#FF5C00] dark:hover:text-white transition-all shadow-2xl shadow-black/10 active:scale-95"

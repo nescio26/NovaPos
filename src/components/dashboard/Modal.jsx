@@ -27,7 +27,7 @@ const Modal = ({ isOpen, onClose, type }) => {
       const response = await getCategory();
       return response.data;
     },
-    enabled: type === "dishes", // Only fetch when adding dishes
+    enabled: type === "dishes",
   });
 
   const categories = categoriesData?.data || [];

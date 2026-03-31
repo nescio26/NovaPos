@@ -1,7 +1,7 @@
 const Dish = require("../models/Dish");
 const Category = require("../models/Category");
 
-// @desc    Create a new dish
+//     Create a new dish
 exports.createDish = async (req, res) => {
   try {
     const {
@@ -66,7 +66,7 @@ exports.createDish = async (req, res) => {
   }
 };
 
-// @desc    Get all dishes
+//     Get all dishes
 exports.getDishes = async (req, res) => {
   try {
     const { category, isAvailable, search } = req.query;
@@ -103,7 +103,7 @@ exports.getDishes = async (req, res) => {
   }
 };
 
-// @desc    Get single dish
+//     Get single dish
 exports.getDishById = async (req, res) => {
   try {
     const dish = await Dish.findById(req.params.id).populate(
@@ -131,7 +131,7 @@ exports.getDishById = async (req, res) => {
   }
 };
 
-// @desc    Update dish
+//     Update dish
 exports.updateDish = async (req, res) => {
   try {
     const dish = await Dish.findByIdAndUpdate(
@@ -161,7 +161,7 @@ exports.updateDish = async (req, res) => {
   }
 };
 
-// @desc    Delete dish
+//     Delete dish
 exports.deleteDish = async (req, res) => {
   try {
     const dish = await Dish.findById(req.params.id);
@@ -188,7 +188,7 @@ exports.deleteDish = async (req, res) => {
   }
 };
 
-// @desc    Toggle dish availability
+//     Toggle dish availability
 exports.toggleDishAvailability = async (req, res) => {
   try {
     const dish = await Dish.findById(req.params.id);

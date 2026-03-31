@@ -19,8 +19,16 @@ const Login = ({ darkMode }) => {
   const loginMutation = useMutation({
     mutationFn: (reqData) => login(reqData),
     onSuccess: (res) => {
-      const { data } = res.data;
+      const { data, accessToken } = res.data;
       const { _id, name, email, phone, role } = data;
+
+      // Save token to localStorage — fallback for Safari iOS which blocks
+      // cross-origin cookies (ITP). The axios interceptor sends this as
+      // Authorization: Bearer <token> on every request.
+      if (accessToken) {
+        localStorage.setItem("accessToken", accessToken);
+      }
+
       dispatch(setUser({ _id, name, email, phone, role }));
       enqueueSnackbar(`Welcome back, ${name}!`, { variant: "success" });
       navigate("/");

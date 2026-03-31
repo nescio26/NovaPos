@@ -23,14 +23,7 @@ const register = async (req, res, next) => {
       return next(createHttpError(409, "User already exists!"));
     }
 
-    const newUser = new User({
-      name,
-      phone,
-      email,
-      password,
-      role,
-    });
-
+    const newUser = new User({ name, phone, email, password, role });
     await newUser.save();
 
     res.status(201).json({
@@ -77,6 +70,8 @@ const login = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "User Login Successfully!",
+
+      accessToken,
       data: isUserPresent,
     });
   } catch (error) {
@@ -113,10 +108,7 @@ const logout = async (req, res, next) => {
 const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find().select("-password").sort({ createdAt: -1 });
-    res.status(200).json({
-      success: true,
-      data: users,
-    });
+    res.status(200).json({ success: true, data: users });
   } catch (error) {
     next(error);
   }
@@ -127,22 +119,18 @@ const updateUser = async (req, res, next) => {
     const { id } = req.params;
     const { name, email, phone, role, password } = req.body;
 
-    // Check if user exists
     const user = await User.findById(id);
     if (!user) {
       return next(createHttpError(404, "User not found!"));
     }
 
-    // Prepare update data
     const updateData = { name, email, phone, role };
 
-    // If password is provided, hash it
     if (password && password.trim() !== "") {
       const salt = await bcrypt.genSalt(10);
       updateData.password = await bcrypt.hash(password, salt);
     }
 
-    // Update user
     const updatedUser = await User.findByIdAndUpdate(id, updateData, {
       new: true,
       runValidators: true,
@@ -163,7 +151,6 @@ const deleteUser = async (req, res, next) => {
     const { id } = req.params;
 
     const user = await User.findByIdAndDelete(id);
-
     if (!user) {
       return next(createHttpError(404, "User not found!"));
     }

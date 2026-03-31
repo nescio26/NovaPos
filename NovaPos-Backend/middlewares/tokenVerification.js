@@ -1,10 +1,12 @@
 const createHttpError = require("http-errors");
-const jwt = require("jsonwebtoken"); // ✅ FIXED
+const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 
 const isVerifiedUser = async (req, res, next) => {
   try {
-    const accessToken = req.cookies?.accessToken;
+    const accessToken =
+      req.cookies?.accessToken ||
+      req.headers.authorization?.replace("Bearer ", "");
 
     if (!accessToken) {
       return next(createHttpError(401, "Please Provide Token!"));

@@ -24,14 +24,13 @@ const createOrder = async (req, res, next) => {
 
     const newOrder = new Order({
       customerDetails,
-      orderStatus: "Pending", // Order is pending payment
+      orderStatus: "Pending",
       bills,
       items,
       table: table._id,
     });
     await newOrder.save();
 
-    // Set table to Booked when order is placed
     await Table.findByIdAndUpdate(table._id, {
       status: "Booked",
       currentOrder: newOrder._id,
@@ -168,7 +167,7 @@ const handleWebhook = async (req, res) => {
       });
 
       console.log(
-        `✅ Order ${orderId} marked Paid, table ${tableId} is now Available.`,
+        ` Order ${orderId} marked Paid, table ${tableId} is now Available.`,
       );
     } catch (err) {
       console.error("DB update error after webhook:", err.message);
