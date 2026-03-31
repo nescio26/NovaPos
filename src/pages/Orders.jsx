@@ -69,53 +69,54 @@ const Orders = () => {
   return (
     <section className="h-screen bg-[#F8F9FD] dark:bg-[#0B0E11] flex flex-col text-[#1A1D21] dark:text-white transition-colors duration-500 overflow-hidden relative">
       {/* HEADER: Sticky with glass effect */}
-      <header className="flex-none p-6 pb-4 border-b border-slate-100 dark:border-white/5 bg-white/80 dark:bg-[#16191D]/90 backdrop-blur-xl z-30 shadow-sm">
-        <div className="max-w-[2000px] mx-auto flex items-center justify-between mb-6">
-          <div className="flex items-center gap-5">
-            <BackButton className="hover:scale-110 transition-transform" />
-            <div className="relative">
-              <h1 className="text-3xl font-black uppercase italic tracking-tighter leading-none flex items-center gap-1">
-                Orders<span className="text-[#FF5C00]">.</span>
-                {/* Syncing Indicator Dot */}
-                <div className="relative flex h-3 w-3 ml-1">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#FF5C00] opacity-20"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-[#FF5C00] shadow-[0_0_10px_rgba(255,92,0,0.5)]"></span>
+      <header className="flex-none w-full bg-white/80 dark:bg-[#0B0E11]/80 backdrop-blur-xl border-b border-slate-100 dark:border-white/5 sticky top-0 z-30">
+        <div className="max-w-[2000px] mx-auto px-4 md:px-8 py-4 md:py-6">
+          {/* TOP ROW */}
+          <div className="flex items-center justify-between mb-5 md:mb-6">
+            <div className="flex items-center gap-3 md:gap-5">
+              <BackButton className="hover:rotate-[-10deg] transition-transform scale-90 md:scale-100" />
+              <div>
+                <h1 className="text-[#1A1D21] dark:text-white text-xl md:text-3xl font-black uppercase italic tracking-normal leading-none">
+                  Orders<span className="text-[#FF5C00]">.</span>
+                </h1>
+                <div className="flex items-center gap-1.5 mt-1 md:mt-2">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#FF5C00] animate-pulse shadow-[0_0_8px_rgba(255,92,0,0.4)]" />
+                  <p className="text-slate-400 dark:text-slate-500 text-[8px] md:text-[10px] font-black uppercase tracking-[0.25em]">
+                    Live Kitchen Sync
+                  </p>
                 </div>
-              </h1>
-              <p className="text-slate-400 dark:text-slate-500 text-[10px] font-black uppercase tracking-[0.25em] mt-1">
-                Live Kitchen Sync
-              </p>
+              </div>
+            </div>
+
+            {/* STATUS CHIP */}
+            <div className="flex items-center gap-3 bg-emerald-500/10 px-3 py-1.5 md:px-4 md:py-2 rounded-xl md:rounded-2xl border border-emerald-500/20 backdrop-blur-sm">
+              <div className="flex flex-col items-end leading-none">
+                <span className="text-[8px] md:text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-tighter mb-1">
+                  System Live
+                </span>
+                <span className="text-[11px] md:text-[13px] font-bold text-slate-700 dark:text-white">
+                  {filteredOrders.length} Active
+                </span>
+              </div>
             </div>
           </div>
 
-          {/* STATUS CHIP: Modern Glassy look */}
-          <div className="flex items-center gap-3 bg-emerald-500/10 px-4 py-2 rounded-2xl border border-emerald-500/20 backdrop-blur-sm">
-            <div className="flex flex-col items-end">
-              <span className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-tighter">
-                System Live
-              </span>
-              <span className="text-[13px] font-bold text-slate-700 dark:text-white leading-none">
-                {filteredOrders.length} Active
-              </span>
-            </div>
+          {/* BOTTOM ROW: TABS */}
+          <div className="flex items-center gap-2 md:gap-3 overflow-x-auto no-scrollbar pb-1">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setStatus(cat.id)}
+                className={`px-5 py-2.5 md:px-7 md:py-3.5 rounded-xl md:rounded-2xl text-[9px] md:text-[11px] font-black uppercase tracking-wider transition-all active:scale-95 whitespace-nowrap border ${
+                  status === cat.id
+                    ? "bg-[#FF5C00] text-white border-transparent shadow-lg shadow-orange-500/20"
+                    : "bg-slate-50 dark:bg-white/5 text-slate-400 dark:text-slate-500 border-slate-100 dark:border-white/5 hover:border-[#FF5C00]/30"
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
           </div>
-        </div>
-
-        {/* TABS: Horizontal scroll with better padding */}
-        <div className="max-w-[2000px] mx-auto flex items-center gap-3 overflow-x-auto no-scrollbar py-2">
-          {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setStatus(cat.id)}
-              className={`px-7 py-3.5 rounded-2xl text-[11px] font-black uppercase tracking-[0.1em] transition-all duration-300 transform active:scale-95 whitespace-nowrap border ${
-                status === cat.id
-                  ? "bg-[#FF5C00] text-white border-transparent shadow-lg shadow-orange-500/30"
-                  : "bg-white dark:bg-white/5 text-slate-400 dark:text-slate-500 border-slate-100 dark:border-white/5 hover:border-[#FF5C00]/30 hover:text-[#FF5C00]"
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
         </div>
       </header>
 

@@ -87,29 +87,30 @@ const CashierDashboard = () => {
   return (
     <section className="h-screen bg-[#F4F7FE] dark:bg-[#0B0E11] flex flex-col text-[#1A1D21] dark:text-white transition-colors duration-500 overflow-hidden font-sans">
       {/* 1. RESPONSIVE HEADER */}
-      <header className="flex-none px-4 md:px-8 py-4 bg-white/80 dark:bg-[#16191D]/80 backdrop-blur-md border-b border-slate-200 dark:border-white/5 z-30">
-        <div className="max-w-[1600px] mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3 md:gap-4">
+      <header className="flex-none w-full bg-white/80 dark:bg-[#0B0E11]/80 backdrop-blur-xl border-b border-slate-100 dark:border-white/5 sticky top-0 z-30">
+        <div className="max-w-[2000px] mx-auto px-4 md:px-8 py-4 md:py-6 flex items-center justify-between">
+          <div className="flex items-center gap-3 md:gap-5">
             <BackButton className="hover:rotate-[-10deg] transition-transform scale-90 md:scale-100" />
             <div>
-              <h1 className="text-[#1A1D21] dark:text-white text-xl md:text-3xl font-black tracking-tighter uppercase italic leading-none">
+              <h1 className="text-[#1A1D21] dark:text-white text-xl md:text-3xl font-black uppercase italic tracking-tighter leading-none">
                 Cashier<span className="hidden sm:inline"> Dashboard</span>
                 <span className="text-[#FF5C00]">.</span>
               </h1>
-              <div className="flex items-center gap-2 mt-1 md:mt-2">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_rgba(16,185,129,0.3)]" />
-                <p className="text-slate-400 dark:text-slate-500 text-[8px] md:text-[9px] font-black uppercase tracking-[0.2em]">
+              <div className="flex items-center gap-1.5 mt-1 md:mt-2">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
+                <p className="text-slate-400 dark:text-slate-500 text-[8px] md:text-[10px] font-black uppercase tracking-[0.2em]">
                   Live Terminal
                 </p>
               </div>
             </div>
           </div>
+
           <button
             onClick={() => queryClient.invalidateQueries(["tables"])}
-            className="flex items-center gap-2 px-3 py-2 md:px-5 md:py-2.5 bg-slate-100 dark:bg-white/5 rounded-xl text-[9px] md:text-[10px] font-black text-slate-500 hover:bg-[#FF5C00] hover:text-white transition-all uppercase"
+            className="flex items-center gap-2 px-4 py-2.5 md:px-6 md:py-3 bg-slate-100 dark:bg-white/5 rounded-xl md:rounded-2xl text-[9px] md:text-[10px] font-black text-slate-500 dark:text-slate-400 hover:bg-[#FF5C00] hover:text-white transition-all uppercase tracking-widest active:scale-95"
           >
             <FaSyncAlt className={tablesLoading ? "animate-spin" : ""} />
-            <span className="hidden xs:inline">Refresh</span>
+            <span className="hidden xs:inline">Sync Data</span>
           </button>
         </div>
       </header>
