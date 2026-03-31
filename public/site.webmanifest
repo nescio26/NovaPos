@@ -1,7 +1,7 @@
 {
   "name": "NovaPos",
   "short_name": "NovaPos",
-  "description": "Premium Point of Sale and Kitchen Management System",
+  "description": "Point of Sale and Kitchen Management System",
   "theme_color": "#FF5C00",
   "background_color": "#0B0E11",
   "display": "standalone",
