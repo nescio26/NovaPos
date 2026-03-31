@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Sun, Moon } from "lucide-react";
 import restaurantImg from "../assets/images/restuarant.png";
-import logo from "../assets/images/logo.png";
+import logo from "../assets/images/Logo.png";
 import Register from "../components/auth/Register";
 import Login from "../components/auth/Login";
 import LightLogo from "../assets/images/LightLogo.png";
