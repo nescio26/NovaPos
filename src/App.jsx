@@ -12,7 +12,6 @@ import CashierDashboard from "./pages/CashierDashboard";
 import { useSelector } from "react-redux";
 import useLoadData from "./hooks/useLoadData";
 import FullScreenLoader from "./components/shared/FullScreenLoader";
-import PaymentSuccess from "./pages/PaymentSuccess";
 
 function Layout() {
   const location = useLocation();
