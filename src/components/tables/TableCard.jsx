@@ -1,6 +1,6 @@
 import React from "react";
 import { getRandomBg } from "../../utils";
-import { FaUsers, FaChair } from "react-icons/fa"; // Added FaChair for a cleaner look
+import { FaUsers, FaChair } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { updateTable } from "../../redux/slices/customerSlice";

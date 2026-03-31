@@ -82,7 +82,6 @@ const Home = () => {
 
   const stats = calculateStats();
 
-  // Loading state
   if (isLoading) {
     return (
       <div className="h-screen bg-[#F8F9FD] dark:bg-[#0B0E11] flex flex-col items-center justify-center">

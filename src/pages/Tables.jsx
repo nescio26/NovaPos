@@ -23,7 +23,6 @@ function Tables() {
     placeholderData: keepPreviousData,
   });
 
-  // Handle Error Notifications
   useEffect(() => {
     if (isError) {
       enqueueSnackbar("Something went wrong while fetching tables!", {
@@ -32,7 +31,6 @@ function Tables() {
     }
   }, [isError]);
 
-  // Safe filtering logic
   const filteredTables = (resData || []).filter((table) => {
     if (status === "all") return true;
     return table.status?.toLowerCase() === status;

@@ -57,7 +57,6 @@ const Bill = () => {
     try {
       const payload = buildOrderPayload();
 
-      // Only creates order, no payment processing
       const { data } = await createStripeOrder(payload);
 
       enqueueSnackbar(
@@ -71,7 +70,6 @@ const Bill = () => {
       dispatch(clearCart());
       dispatch(removeCustomer());
 
-      // Redirect to tables after 2 seconds
       setTimeout(() => {
         navigate("/tables");
       }, 2000);

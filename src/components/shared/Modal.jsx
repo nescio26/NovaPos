@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { IoClose } from "react-icons/io5";
 
 const Modal = ({ isOpen, onClose, title, children }) => {
-  // Prevent scrolling when modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
@@ -16,7 +15,6 @@ const Modal = ({ isOpen, onClose, title, children }) => {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 transition-colors duration-500">
-      {/* BACKDROP - Darker overlay in dark mode */}
       <div
         className="absolute inset-0 bg-slate-900/40 dark:bg-black/60 backdrop-blur-sm transition-opacity duration-500"
         onClick={onClose}

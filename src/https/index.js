@@ -10,11 +10,9 @@ const api = axios.create({
   },
 });
 
-// ── Wake up Render on app load ───────────────────────────────────────────────
-
 export const wakeUpServer = () => api.get("/health").catch(() => {});
 
-// ── Request interceptor ──────────────────────────────────────────────────────
+//  Request interceptor
 
 api.interceptors.request.use(
   (config) => {
@@ -27,7 +25,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
-// ── Response interceptor ─────────────────────────────────────────────────────
+//  Response interceptor
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -47,25 +45,25 @@ api.interceptors.response.use(
 
 export default api;
 
-// ── Auth ─────────────────────────────────────────────────────────────────────
+//  Auth
 export const login = (data) => api.post("/api/user/login", data);
 export const register = (data) => api.post("/api/user/register", data);
 export const getUserData = () => api.get("/api/user");
 export const logout = () => api.post("/api/user/logout");
 
-// ── User management ──────────────────────────────────────────────────────────
+// User management
 export const getAllUsers = () => api.get("/api/user/all");
 export const updateUser = ({ userId, ...data }) =>
   api.put(`/api/user/${userId}`, data);
 export const deleteUser = (userId) => api.delete(`/api/user/${userId}`);
 
-// ── Tables ───────────────────────────────────────────────────────────────────
+// Tables
 export const addTable = (data) => api.post("/api/table/add", data);
 export const getTables = () => api.get("/api/table");
 export const updateTable = ({ tableId, ...tableData }) =>
   api.put(`/api/table/${tableId}`, tableData);
 
-// ── Payments ─────────────────────────────────────────────────────────────────
+// Payments
 export const createStripeOrder = (data) =>
   api.post("/api/payment/create-order", data);
 export const processCashPayment = (data) =>
@@ -73,14 +71,14 @@ export const processCashPayment = (data) =>
 export const createStripePaymentForOrder = (data) =>
   api.post("/api/payment/create-stripe-payment", data);
 
-// ── Orders ───────────────────────────────────────────────────────────────────
+// Orders
 export const addOrder = (data) => api.post("/api/order", data);
 export const getOrders = () => api.get("/api/order");
 export const getOrderById = (id) => api.get(`/api/order/${id}`);
 export const updateOrderStatus = (orderId, orderStatus) =>
   api.put(`/api/order/${orderId}`, { orderStatus });
 
-// ── Categories & Dishes ──────────────────────────────────────────────────────
+// Categories &
 export const getCategory = () => api.get("/api/category");
 export const getDish = () => api.get("/api/dish");
 export const addCategory = (categoryData) =>

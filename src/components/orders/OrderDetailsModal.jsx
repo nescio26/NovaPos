@@ -13,7 +13,6 @@ const OrderDetailsModal = ({ isOpen, onClose, order }) => {
 
   if (!isOpen || !order) return null;
 
-  // Close when clicking the backdrop
   const handleBackdropClick = (e) => {
     if (modalRef.current && !modalRef.current.contains(e.target)) {
       onClose();

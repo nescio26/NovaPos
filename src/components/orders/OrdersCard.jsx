@@ -83,7 +83,6 @@ const OrdersCard = ({ order }) => {
             </div>
           </div>
 
-          {/* Status Indicator Dot */}
           <div className={`${config.bg} p-2 rounded-full`}>
             <div
               className={`w-2 h-2 rounded-full ${config.color.replace("text", "bg")} ${status === "Preparing" ? "animate-pulse" : ""}`}
@@ -123,7 +122,6 @@ const OrdersCard = ({ order }) => {
             </div>
           </div>
 
-          {/* Interaction Icon */}
           <div className="w-8 h-8 rounded-full bg-slate-50 dark:bg-white/5 flex items-center justify-center group-hover:bg-[#FF5C00] transition-colors duration-300">
             <FaCheckDouble
               size={12}

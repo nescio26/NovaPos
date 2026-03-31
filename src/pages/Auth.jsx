@@ -10,7 +10,6 @@ const Auth = () => {
   const [isRegister, setIsRegister] = useState(false);
   const [darkMode, setDarkMode] = useState(true);
 
-  // Synchronize the 'dark' class with the document root for global Tailwind support
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add("dark");
