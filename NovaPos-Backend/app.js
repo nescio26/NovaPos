@@ -2,34 +2,51 @@ require("dotenv").config();
 
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const cors = require("cors");
+
 const connectDB = require("./config/database");
 const globalErrorHandler = require("./middlewares/globalErrorHandler");
 
-const cors = require("cors");
-
 const app = express();
-// payment webhook
-app.use("/api/payment/webhook", express.raw({ type: "application/json" }));
 
-//  Middleware
+// =========================
+// 1. CORS CONFIG (IMPORTANT)
+// =========================
 app.use(
   cors({
+    origin: process.env.FRONTEND_URL,
     credentials: true,
-    origin: ["http://localhost:5173"],
   }),
 );
+// =========================
+// 2. WEBHOOK (Stripe / Payment)
+// MUST stay BEFORE express.json()
+// =========================
+app.use("/api/payment/webhook", express.raw({ type: "application/json" }));
+
+// =========================
+// 3. MIDDLEWARES
+// =========================
 app.use(express.json());
 app.use(cookieParser());
 
-//  Connect DB
+// =========================
+// 4. DATABASE CONNECTION
+// =========================
 connectDB();
 
-//  Test route
+// =========================
+// 5. TEST ROUTE
+// =========================
 app.get("/", (req, res) => {
-  res.json({ message: "Hello From POS Server!" });
+  res.json({
+    message: "🚀 POS Server is running successfully",
+  });
 });
 
-//  Routes
+// =========================
+// 6. ROUTES
+// =========================
 app.use("/api/user", require("./routes/userRoute"));
 app.use("/api/order", require("./routes/orderRoute"));
 app.use("/api/table", require("./routes/tableRoute"));
@@ -37,11 +54,16 @@ app.use("/api/payment", require("./routes/paymentRoute"));
 app.use("/api/category", require("./routes/categoryRoutes"));
 app.use("/api/dish", require("./routes/dishRoutes"));
 
-// Global Error Handler
+// =========================
+// 7. GLOBAL ERROR HANDLER
+// =========================
 app.use(globalErrorHandler);
 
-//  Start Server
+// =========================
+// 8. START SERVER
+// =========================
 const PORT = process.env.PORT || 8000;
+
 app.listen(PORT, () => {
-  console.log(`POS server is listening on port ${PORT}`);
+  console.log(`🚀 POS server running on port ${PORT}`);
 });
