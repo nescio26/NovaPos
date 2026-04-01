@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import store from "./redux/store.js";
 import { SnackbarProvider } from "notistack";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Analytics } from "@vercel/analytics/react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,6 +22,7 @@ createRoot(document.getElementById("root")).render(
       <SnackbarProvider autoHideDuration={3000}>
         <QueryClientProvider client={queryClient}>
           <App />
+          <Analytics />
         </QueryClientProvider>
       </SnackbarProvider>
     </Provider>
