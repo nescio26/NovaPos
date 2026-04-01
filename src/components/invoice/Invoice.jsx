@@ -10,62 +10,62 @@ const Invoice = ({ orderInfo, setShowInvoice }) => {
     const WinPrint = window.open("", "", "width=900,height=650");
 
     WinPrint.document.write(`
-      <html>
-        <head>
-          <title>Order Receipt - NovaPos</title>
-          <style>
-            body { 
-              font-family: 'Courier New', monospace; 
-              padding: 20px; 
-              margin: 0;
-              background: white;
-            }
-            .receipt-container { 
-              max-width: 400px; 
-              margin: 0 auto;
-              border: 1px solid #ddd; 
-              padding: 20px;
-              border-radius: 8px;
-            }
-            h2 { 
-              text-align: center; 
-              color: #FF5C00;
-              margin-bottom: 5px;
-            }
-            .divider {
-              border-top: 1px dashed #ddd;
-              margin: 15px 0;
-            }
-            .text-center {
-              text-align: center;
-            }
-            .total {
-              font-size: 18px;
-              font-weight: bold;
-              color: #FF5C00;
-            }
-            .row {
-              display: flex;
-              justify-content: space-between;
-              margin-bottom: 8px;
-            }
-            .bold {
-              font-weight: bold;
-            }
-            @media print {
-              body { margin: 0; padding: 0; }
-              .receipt-container { border: none; padding: 0; }
-              button { display: none; }
-            }
-          </style>
-        </head>
-        <body>
-          <div class="receipt-container">
-            ${printContent}
-          </div>
-        </body>
-      </html>
-    `);
+        <html>
+          <head>
+            <title>Order Receipt - NovaPos</title>
+            <style>
+              body { 
+                font-family: 'Courier New', monospace; 
+                padding: 20px; 
+                margin: 0;
+                background: white;
+              }
+              .receipt-container { 
+                max-width: 400px; 
+                margin: 0 auto;
+                border: 1px solid #ddd; 
+                padding: 20px;
+                border-radius: 8px;
+              }
+              h2 { 
+                text-align: center; 
+                color: #FF5C00;
+                margin-bottom: 5px;
+              }
+              .divider {
+                border-top: 1px dashed #ddd;
+                margin: 15px 0;
+              }
+              .text-center {
+                text-align: center;
+              }
+              .total {
+                font-size: 18px;
+                font-weight: bold;
+                color: #FF5C00;
+              }
+              .row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 8px;
+              }
+              .bold {
+                font-weight: bold;
+              }
+              @media print {
+                body { margin: 0; padding: 0; }
+                .receipt-container { border: none; padding: 0; }
+                button { display: none; }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="receipt-container">
+              ${printContent}
+            </div>
+          </body>
+        </html>
+      `);
 
     WinPrint.document.close();
     WinPrint.focus();

@@ -139,7 +139,7 @@ const CashierDashboard = () => {
         <AnimatePresence>
           {selectedTable && (
             <motion.aside
-              initial={{ y: "100%", opacity: 0 }} // Mobile: Slide from bottom
+              initial={{ y: "100%", opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: "100%", opacity: 0 }}
               transition={{ type: "spring", damping: 25, stiffness: 200 }}

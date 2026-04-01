@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { BiSolidDish, BiPlus } from "react-icons/bi";
 import { MdCategory, MdTableBar, MdPayment, MdPeople } from "react-icons/md";
-
 // Component Imports
 import Metrics from "../components/dashboard/Metrics";
 import RecentOrders from "../components/dashboard/RecentOrders";
 import PaymentDetails from "../components/dashboard/PaymentDetails";
 import StaffDetails from "../components/dashboard/StaffDetails";
+import Dishes from "../components/dashboard/Dishes"; // ← NEW
 import Modal from "../components/dashboard/Modal";
 
 const buttons = [
@@ -20,6 +20,7 @@ const tabs = [
   { id: "Orders", label: "Orders", icon: <MdTableBar /> },
   { id: "Payments", label: "Payments", icon: <MdPayment /> },
   { id: "Staff", label: "Staff", icon: <MdPeople /> },
+  { id: "Dishes", label: "Dishes", icon: <BiSolidDish /> }, // ← NEW
 ];
 
 const Dashboard = () => {
@@ -36,6 +37,8 @@ const Dashboard = () => {
         return <PaymentDetails />;
       case "Staff":
         return <StaffDetails />;
+      case "Dishes":
+        return <Dishes />; // ← NEW
       default:
         return <Metrics />;
     }

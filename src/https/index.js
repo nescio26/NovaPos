@@ -78,9 +78,10 @@ export const getOrderById = (id) => api.get(`/api/order/${id}`);
 export const updateOrderStatus = (orderId, orderStatus) =>
   api.put(`/api/order/${orderId}`, { orderStatus });
 
-// Categories &
+// Categories & Dishes
 export const getCategory = () => api.get("/api/category");
 export const getDish = () => api.get("/api/dish");
 export const addCategory = (categoryData) =>
   api.post("/api/category", categoryData);
 export const addDish = (dishData) => api.post("/api/dish", dishData);
+export const updateDish = (id, data) => api.put(`/api/dish/${id}`, data);

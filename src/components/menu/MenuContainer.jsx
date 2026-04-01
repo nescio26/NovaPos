@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { GrRadialSelected } from "react-icons/gr";
 import { FaPlus, FaMinus, FaShoppingCart } from "react-icons/fa";
 import { useDispatch } from "react-redux";
@@ -12,7 +12,7 @@ const MenuContainer = () => {
   const [counts, setCounts] = useState({});
   const dispatch = useDispatch();
 
-  // Fetch category from database
+  // Fetch categories
   const {
     data: categoryData,
     isLoading: categoryLoading,
@@ -25,7 +25,7 @@ const MenuContainer = () => {
     },
   });
 
-  // Fetch dish from database
+  // Fetch dishes
   const {
     data: dishData,
     isLoading: dishLoading,
@@ -38,19 +38,17 @@ const MenuContainer = () => {
     },
   });
 
-  // Process category and dish
-  const category = categoryData?.data || [];
-  const dish = dishData?.data || [];
+  const categories = categoryData?.data || [];
+  const dishes = dishData?.data || [];
 
-  // Group dish by category
-  const menuItems = React.useMemo(() => {
-    if (!category.length || !dish.length) return [];
-
-    return category.map((cat) => ({
+  // Group dishes by category
+  const menuItems = useMemo(() => {
+    if (!categories.length || !dishes.length) return [];
+    return categories.map((cat) => ({
       id: cat._id,
       name: cat.name,
       description: cat.description,
-      items: dish
+      items: dishes
         .filter((d) => d.category?._id === cat._id)
         .map((d) => ({
           id: d._id,
@@ -62,15 +60,16 @@ const MenuContainer = () => {
           category: d.category,
         })),
     }));
-  }, [category, dish]);
+  }, [categories, dishes]);
 
-  // Set default selected category when data loads
+  // Set default selected category
   useEffect(() => {
     if (menuItems.length > 0 && !selectedCategory) {
       setSelectedCategory(menuItems[0]);
     }
   }, [menuItems, selectedCategory]);
 
+  // Update quantity
   const updateCount = (id, delta) => {
     setCounts((prev) => ({
       ...prev,
@@ -78,8 +77,10 @@ const MenuContainer = () => {
     }));
   };
 
+  // Add to cart
   const handleAddToCart = (item) => {
     const itemCount = counts[item.id] || 0;
+
     if (itemCount === 0) {
       enqueueSnackbar("Please select quantity first", { variant: "warning" });
       return;
@@ -108,10 +109,7 @@ const MenuContainer = () => {
       variant: "success",
     });
 
-    setCounts((prev) => ({
-      ...prev,
-      [item.id]: 0,
-    }));
+    setCounts((prev) => ({ ...prev, [item.id]: 0 }));
   };
 
   // Loading state
@@ -220,8 +218,7 @@ const MenuContainer = () => {
 
       {/* ITEMS GRID */}
       <div className="flex-1 overflow-y-auto custom-scrollbar px-6 py-8">
-        {selectedCategory?.items.filter((item) => item.isAvailable).length ===
-        0 ? (
+        {selectedCategory?.items.length === 0 ? (
           <div className="flex items-center justify-center h-full min-h-[400px]">
             <div className="text-center">
               <span className="text-6xl mb-4 block">🍽️</span>
@@ -235,68 +232,74 @@ const MenuContainer = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
-            {selectedCategory?.items
-              .filter((item) => item.isAvailable)
-              .map((item) => {
-                const currentCount = counts[item.id] || 0;
-                return (
-                  <div
-                    key={item.id}
-                    className="bg-white dark:bg-[#1c2025] border border-slate-100 dark:border-white/5 flex flex-col items-start justify-between p-6 rounded-[2.5rem] h-[180px] hover:shadow-2xl hover:shadow-slate-200/50 dark:hover:shadow-black/40 transition-all group"
-                  >
-                    <div className="flex justify-between items-start w-full gap-2">
-                      <div className="flex flex-col gap-1 overflow-hidden flex-1">
-                        <h1 className="text-[#1A1D21] dark:text-white text-lg font-black tracking-tighter leading-tight uppercase italic group-hover:text-[#FF5C00] transition-colors truncate">
-                          {item.name}
-                        </h1>
-                        {item.description && (
-                          <p className="text-slate-400 dark:text-slate-500 text-[10px] font-medium line-clamp-2">
-                            {item.description}
-                          </p>
-                        )}
-                        <p className="text-slate-400 dark:text-slate-500 text-[12px] font-black tracking-widest mt-1">
-                          RM {item.price.toFixed(2)}
-                        </p>
-                      </div>
+            {selectedCategory?.items.map((item) => {
+              const currentCount = counts[item.id] || 0;
+              return (
+                <div
+                  key={item.id}
+                  className={`relative bg-white dark:bg-[#1c2025] border border-slate-100 dark:border-white/5 flex flex-col items-start justify-between p-6 rounded-[2.5rem] h-[180px] hover:shadow-2xl hover:shadow-slate-200/50 dark:hover:shadow-black/40 transition-all group ${
+                    !item.isAvailable ? "opacity-50 pointer-events-none" : ""
+                  }`}
+                >
+                  {!item.isAvailable && (
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center text-white text-sm font-bold rounded-[2.5rem]">
+                      Unavailable
+                    </div>
+                  )}
 
+                  <div className="flex justify-between items-start w-full gap-2">
+                    <div className="flex flex-col gap-1 overflow-hidden flex-1">
+                      <h1 className="text-[#1A1D21] dark:text-white text-lg font-black tracking-tighter leading-tight uppercase italic group-hover:text-[#FF5C00] transition-colors truncate">
+                        {item.name}
+                      </h1>
+                      {item.description && (
+                        <p className="text-slate-400 dark:text-slate-500 text-[10px] font-medium line-clamp-2">
+                          {item.description}
+                        </p>
+                      )}
+                      <p className="text-slate-400 dark:text-slate-500 text-[12px] font-black tracking-widest mt-1">
+                        RM {item.price.toFixed(2)}
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => handleAddToCart(item)}
+                      className={`p-3 rounded-2xl transition-all flex-shrink-0 active:scale-90 ${
+                        currentCount > 0
+                          ? "bg-[#FF5C00] text-white shadow-lg shadow-orange-500/30"
+                          : "bg-slate-50 dark:bg-white/5 text-slate-300 dark:text-slate-600 hover:bg-slate-100 dark:hover:bg-white/10"
+                      }`}
+                    >
+                      <FaShoppingCart size={18} />
+                    </button>
+                  </div>
+
+                  <div className="flex items-center justify-between w-full mt-auto">
+                    <span className="text-[#1A1D21] dark:text-white text-[9px] font-black uppercase tracking-[0.2em] opacity-40">
+                      Qty
+                    </span>
+
+                    <div className="flex items-center bg-[#F8F9FD] dark:bg-white/5 rounded-2xl p-1 border border-slate-100 dark:border-white/5">
                       <button
-                        onClick={() => handleAddToCart(item)}
-                        className={`p-3 rounded-2xl transition-all flex-shrink-0 active:scale-90 ${
-                          currentCount > 0
-                            ? "bg-[#FF5C00] text-white shadow-lg shadow-orange-500/30"
-                            : "bg-slate-50 dark:bg-white/5 text-slate-300 dark:text-slate-600 hover:bg-slate-100 dark:hover:bg-white/10"
-                        }`}
+                        className="w-9 h-9 flex items-center justify-center text-slate-400 dark:text-slate-500 hover:text-rose-500 transition-colors"
+                        onClick={() => updateCount(item.id, -1)}
                       >
-                        <FaShoppingCart size={18} />
+                        <FaMinus size={12} />
+                      </button>
+                      <span className="text-[#1A1D21] dark:text-white text-sm font-black w-10 text-center">
+                        {currentCount}
+                      </span>
+                      <button
+                        className="w-9 h-9 flex items-center justify-center text-slate-400 dark:text-slate-500 hover:text-[#FF5C00] transition-colors"
+                        onClick={() => updateCount(item.id, 1)}
+                      >
+                        <FaPlus size={12} />
                       </button>
                     </div>
-
-                    <div className="flex items-center justify-between w-full mt-auto">
-                      <span className="text-[#1A1D21] dark:text-white text-[9px] font-black uppercase tracking-[0.2em] opacity-40">
-                        Qty
-                      </span>
-
-                      <div className="flex items-center bg-[#F8F9FD] dark:bg-white/5 rounded-2xl p-1 border border-slate-100 dark:border-white/5">
-                        <button
-                          className="w-9 h-9 flex items-center justify-center text-slate-400 dark:text-slate-500 hover:text-rose-500 transition-colors"
-                          onClick={() => updateCount(item.id, -1)}
-                        >
-                          <FaMinus size={12} />
-                        </button>
-                        <span className="text-[#1A1D21] dark:text-white text-sm font-black w-10 text-center">
-                          {currentCount}
-                        </span>
-                        <button
-                          className="w-9 h-9 flex items-center justify-center text-slate-400 dark:text-slate-500 hover:text-[#FF5C00] transition-colors"
-                          onClick={() => updateCount(item.id, 1)}
-                        >
-                          <FaPlus size={12} />
-                        </button>
-                      </div>
-                    </div>
                   </div>
-                );
-              })}
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
