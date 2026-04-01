@@ -1,31 +1,27 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 @import "tailwindcss";
 
 /* 1. DEFINE THE DARK MODE VARIANT (Tailwind v4) */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* 2. FONTS */
+/* 2. FONTS — loaded via <link> in index.html instead (non-blocking) */
 
 /* 3. DESIGN TOKENS (CSS VARIABLES) */
 :root {
-  /* Prevent accidental text selection on POS terminals */
   -webkit-user-select: none;
   user-select: none;
 
-  /* High-Visibility Light Theme */
-  --bg-main: #f1f5f9; /* Slate-100: Better depth than pure white */
-  --text-main: #0f172a; /* Slate-900: Purest contrast */
-  --text-muted: #64748b; /* Slate-500: Clear but secondary */
+  --bg-main: #f1f5f9;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
   --nav-bg: #ffffff;
-  --border-subtle: #e2e8f0; /* Slate-200 */
+  --border-subtle: #e2e8f0;
   --brand-orange: #ff5c00;
 }
 
 .dark {
-  /* High-Visibility Dark Theme */
-  --bg-main: #0b0e11; /* Deep obsidian */
-  --text-main: #f8fafc; /* Slate-50: Crisp and readable */
-  --text-muted: #94a3b8; /* Slate-400: Bright enough for older eyes */
+  --bg-main: #0b0e11;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
   --nav-bg: #16191d;
   --border-subtle: rgba(255, 255, 255, 0.08);
   --brand-orange: #ff5c00;
@@ -39,20 +35,15 @@
     background-color: var(--bg-main);
     color: var(--text-main);
     -webkit-font-smoothing: antialiased;
-    transition:
-      background-color 0.3s ease,
-      color 0.3s ease;
-    /* Base font size bump for better legibility */
+    /* REMOVED: background-color/color transition — triggers expensive repaints on every theme switch */
     @apply text-[16px] leading-relaxed;
   }
 
-  /* POS Touch Optimization */
   * {
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* Allow typing in inputs */
   input,
   textarea {
     -webkit-user-select: text;
@@ -60,7 +51,6 @@
     @apply font-medium;
   }
 
-  /* Standard POS Heading Style */
   h1,
   h2,
   h3,
@@ -71,26 +61,23 @@
 
 /* 5. COMPONENTS & UTILITIES */
 @layer utilities {
-  /* Dynamic Glass Navigation */
   .glass-nav {
     background-color: var(--nav-bg);
     border-top: 1px solid var(--border-subtle);
     @apply shadow-[0_-4px_20px_rgba(0,0,0,0.05)] backdrop-blur-lg;
   }
 
-  /* Visual feedback for touch/click */
+  /* GPU-composited only — transform & opacity are safe */
   .active-press:active {
     transform: scale(0.96);
     transition: transform 0.1s ease;
   }
 
-  /* POS Search & Form Inputs */
   .input-field {
     @apply bg-transparent outline-none w-full text-base font-bold uppercase tracking-wider;
     color: var(--text-main);
   }
 
-  /* Scrollbar Management */
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -119,7 +106,7 @@
          active:scale-95 font-black uppercase tracking-widest transition-all;
 }
 
-/* 7. FULLSCREEN LOADER (NovaPOS Theme) */
+/* 7. FULLSCREEN LOADER */
 .fullscreen-loader {
   @apply fixed inset-0 flex flex-col items-center justify-center z-[9999] backdrop-blur-md;
   background-color: var(--bg-main);
@@ -136,11 +123,9 @@
   animation: rotation 1s linear infinite;
 }
 
+/* GPU-composited animations only (transform, opacity) */
 @keyframes rotation {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
+  to {
     transform: rotate(360deg);
   }
 }
@@ -168,7 +153,6 @@
 .animate-fadeIn {
   animation: fadeIn 0.2s ease-out;
 }
-
 .animate-slideUp {
   animation: slideUp 0.3s ease-out;
 }

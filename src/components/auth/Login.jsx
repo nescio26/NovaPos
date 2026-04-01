@@ -22,9 +22,6 @@ const Login = ({ darkMode }) => {
       const { data, accessToken } = res.data;
       const { _id, name, email, phone, role } = data;
 
-      // Save token to localStorage — fallback for Safari iOS which blocks
-      // cross-origin cookies (ITP). The axios interceptor sends this as
-      // Authorization: Bearer <token> on every request.
       if (accessToken) {
         localStorage.setItem("accessToken", accessToken);
       }
@@ -75,7 +72,7 @@ const Login = ({ darkMode }) => {
               onChange={(e) =>
                 setFormData({ ...formData, email: e.target.value })
               }
-              placeholder="Enter Email"
+              placeholder="test@gmail.com"
               className={`bg-transparent flex-1 text-base focus:outline-none font-bold ${darkMode ? "text-white" : "text-slate-900"}`}
               required
             />
@@ -97,7 +94,7 @@ const Login = ({ darkMode }) => {
               onChange={(e) =>
                 setFormData({ ...formData, password: e.target.value })
               }
-              placeholder="Enter Password"
+              placeholder="test123"
               className={`bg-transparent flex-1 text-base focus:outline-none font-bold tracking-widest ${darkMode ? "text-white" : "text-slate-900"}`}
               required
             />
